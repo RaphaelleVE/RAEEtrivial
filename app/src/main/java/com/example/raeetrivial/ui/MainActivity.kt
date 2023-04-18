@@ -1,4 +1,4 @@
-package com.example.raeetrivial
+package com.example.raeetrivial.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,13 +17,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RAEETRIVIALTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+                ComposeApp()
             }
         }
     }
