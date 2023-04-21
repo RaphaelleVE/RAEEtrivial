@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RAEE TRIVIAL</string>
+    <string name="email">email</string>
+    <string name="password">mot de passe</string>
+    <string name="signin">Connexion</string>
+    <string name="not_register_signup">Pas de compte ? Inscris toi !</string>
+    <string name="already_signup_login">Déjà inscrit ? Connecte toi !</string>
+    <string name="signup">Inscription</string>
+    <string name="confirm_password">Confirme le mot de passe</string>
+</resources>

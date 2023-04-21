@@ -1,7 +1,9 @@
 package com.example.raeetrivial.login
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -20,6 +23,9 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.navigation.NavController
 import com.example.raeetrivial.R
+import com.example.raeetrivial.signup.SignUpScreen
+import com.example.raeetrivial.ui.ComposeApp
+import com.example.raeetrivial.ui.Route
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,8 +34,13 @@ fun LoginScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    Column (modifier = Modifier.fillMaxSize()){
-        TextField(value = email,
+    Column (modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center
+    ){
+    Column (modifier = Modifier.fillMaxWidth(),
+        ){
+        TextField(modifier = Modifier.fillMaxWidth(),
+            value = email,
             onValueChange ={
                 email = it
             },
@@ -43,7 +54,8 @@ fun LoginScreen(navController: NavController) {
                 imeAction = ImeAction.Next
             )
         )
-        TextField(value = password,
+        TextField(modifier = Modifier.fillMaxWidth(),
+            value = password,
             onValueChange ={
                 password = it
             },
@@ -57,7 +69,7 @@ fun LoginScreen(navController: NavController) {
                 imeAction = ImeAction.Next
             )
         )
-        Button(
+        Button(modifier = Modifier.fillMaxWidth(),
             onClick = {
               //TODO
             }
@@ -67,5 +79,16 @@ fun LoginScreen(navController: NavController) {
                 style = MaterialTheme.typography.titleMedium
             )
         }
+        Button(modifier = Modifier.fillMaxWidth(),
+            onClick = {
+                navController.navigate(Route.SIGNUP)
+            }
+        ){
+            Text(
+                text =  stringResource(id = R.string.not_register_signup),
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
+    }
     }
 }

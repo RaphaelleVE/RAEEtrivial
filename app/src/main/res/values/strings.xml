@@ -2,5 +2,11 @@
     <string name="app_name">RAEE TRIVIAL</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
     <string name="signin">Sign in</string>
+    <string name="signup">Sign up</string>
+    <string name="not_register_signup">Not registered? Sign up !</string>
+    <string name="already_signup_login">Already signed up ? Sign in !</string>
+
+
 </resources>

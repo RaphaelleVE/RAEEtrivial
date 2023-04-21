@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.raeetrivial.login.LoginScreen
+import com.example.raeetrivial.signup.SignUpScreen
 
 @Composable fun ComposeApp () {
     val navController = rememberNavController()
@@ -16,13 +17,17 @@ import com.example.raeetrivial.login.LoginScreen
         composable(Route.LOGIN){
             LoginScreen(navController = navController)
         }
+        composable(Route.SIGNUP){
+            SignUpScreen(navController = navController)
+        }
     }
 }
 
 object Route {
     const val LOGIN = "login"
+    const val SIGNUP = "sign_up"
 }
 
 object Argument {
-    const val USERNAME = "username"
+
 }
