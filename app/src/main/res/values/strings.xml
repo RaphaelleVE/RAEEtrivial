@@ -6,7 +6,7 @@
     <string name="signin">Sign in</string>
     <string name="signup">Sign up</string>
     <string name="not_register_signup">Not registered? Sign up !</string>
-    <string name="already_signup_login">Already signed up ? Sign in !</string>
+    <string name="already_signup_login">Signed up ? Sign in</string>
 
 
 </resources>
