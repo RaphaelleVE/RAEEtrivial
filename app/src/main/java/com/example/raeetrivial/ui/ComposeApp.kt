@@ -1,14 +1,14 @@
 package com.example.raeetrivial.ui
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.raeetrivial.login.LoginScreen
-import com.example.raeetrivial.signup.SignUpScreen
+import com.example.raeetrivial.ui.signup.SignUpScreen
 
-@Composable fun ComposeApp () {
+@Composable
+fun ComposeApp () {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
