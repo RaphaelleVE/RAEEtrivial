@@ -2,6 +2,7 @@ package com.example.raeetrivial.di
 
 import com.example.raeetrivial.BuildConfig
 import com.example.raeetrivial.network.DetailsApi
+import com.example.raeetrivial.network.QuestionsOfTheDayApi
 import com.example.raeetrivial.network.UsersApi
 import dagger.Module
 import dagger.Provides
@@ -48,5 +49,10 @@ object NetworkModule {
     @Singleton
     fun provideUserDetailsService(retrofit: Retrofit): DetailsApi =
         retrofit.create(DetailsApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideQuestionsOfTheDayApiService(retrofit: Retrofit): QuestionsOfTheDayApi =
+        retrofit.create(QuestionsOfTheDayApi::class.java)
 
 }
