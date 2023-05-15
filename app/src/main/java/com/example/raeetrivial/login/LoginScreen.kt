@@ -71,7 +71,7 @@ fun LoginScreen(navController: NavController) {
         )
         Button(modifier = Modifier.fillMaxWidth(),
             onClick = {
-              //TODO
+                navController.navigate(Route.BASE)
             }
         ){
             Text(

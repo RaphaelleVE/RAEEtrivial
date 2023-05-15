@@ -8,4 +8,5 @@
     <string name="already_signup_login">Déjà inscrit ? Connection</string>
     <string name="signup">Inscription</string>
     <string name="confirm_password">Confirme le mot de passe</string>
+    <string name="game">Jeu</string>
 </resources>

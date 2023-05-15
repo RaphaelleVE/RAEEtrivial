@@ -111,7 +111,7 @@ fun SignUpScreen(navController: NavController) {
                 Button(modifier = Modifier.fillMaxWidth().padding(5.dp).height(60.dp),
                     shape = RoundedCornerShape(7.dp),
                     onClick = {
-                        //TODO
+                        navController.navigate(Route.BASE)
                     }
                 ) {
                     Text(
