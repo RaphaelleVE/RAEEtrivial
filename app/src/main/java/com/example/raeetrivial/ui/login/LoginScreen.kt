@@ -1,4 +1,4 @@
-package com.example.raeetrivial.login
+package com.example.raeetrivial.ui.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -68,7 +68,7 @@ fun LoginScreen(navController: NavController) {
         )
         Button(modifier = Modifier.fillMaxWidth(),
             onClick = {
-              //TODO
+                navController.navigate(Route.BASE)
             }
         ){
             Text(

@@ -108,6 +108,7 @@ fun SignUpScreen(navController: NavController) {
                     shape = RoundedCornerShape(7.dp),
                     onClick = {
                         viewModel.signupUser(email, password)
+                        navController.navigate(Route.BASE)
                     }
                 ) {
                     Text(
