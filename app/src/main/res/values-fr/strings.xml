@@ -9,4 +9,6 @@
     <string name="signup">Inscription</string>
     <string name="confirm_password">Confirme le mot de passe</string>
     <string name="game">Jeu</string>
+    <string name="ranking">Classement</string>
+    <string name="profile">Profile</string>
 </resources>

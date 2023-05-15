@@ -1,4 +1,4 @@
-package com.example.raeetrivial.ranking
+package com.example.raeetrivial.ui.ranking
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
