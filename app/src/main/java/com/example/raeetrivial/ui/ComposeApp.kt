@@ -8,7 +8,9 @@ import com.example.raeetrivial.login.LoginScreen
 import com.example.raeetrivial.signup.SignUpScreen
 import com.example.raeetrivial.ranking.RankingScreen
 
-@Composable fun ComposeApp () {
+
+@Composable
+fun ComposeApp () {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
