@@ -7,6 +7,8 @@
     <string name="signup">Sign up</string>
     <string name="not_register_signup">Not registered? Sign up !</string>
     <string name="already_signup_login">Signed up ? Sign in</string>
-
+    <string name="game">Game</string>
+    <string name="ranking">Ranking</string>
+    <string name="profile">Profile</string>
 
 </resources>

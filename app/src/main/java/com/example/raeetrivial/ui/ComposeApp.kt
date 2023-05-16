@@ -4,44 +4,28 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.raeetrivial.login.LoginScreen
-import com.example.raeetrivial.ui.questions.QuestionsScreen
+import com.example.raeetrivial.ui.baseApp.BaseScreen
+import com.example.raeetrivial.ui.login.LoginScreen
 import com.example.raeetrivial.ui.signup.SignUpScreen
-import com.example.raeetrivial.ui.ranking.RankingScreen
 
 @Composable
 fun ComposeApp () {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = Route.QUESTIONS
+        startDestination = Route.LOGIN
     ) {
         composable(Route.LOGIN){
             LoginScreen(navController = navController)
         }
+
         composable(Route.SIGNUP){
             SignUpScreen(navController = navController)
         }
 
-        composable(Route.QUESTIONS) {
-            QuestionsScreen()
-        }
-
-        composable(Route.RANKING){
-            RankingScreen(navController = navController)
-
+        composable(Route.BASE){
+            BaseScreen(navController = navController)
         }
     }
 }
 
-object Route {
-    const val LOGIN = "login"
-    const val SIGNUP = "sign_up"
-    const val QUESTIONS = "questions"
-    const val RANKING = "ranking"
-
-}
-
-object Argument {
-
-}
