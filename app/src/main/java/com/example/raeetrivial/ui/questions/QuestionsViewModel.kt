@@ -1,37 +1,69 @@
 package com.example.raeetrivial.ui.questions
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.raeetrivial.domain.Answer
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import com.example.raeetrivial.network.model.Result
 import com.example.raeetrivial.repository.QuestionsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.net.URLDecoder
 
 @HiltViewModel
 class QuestionsViewModel @Inject constructor(private val questionsRepository: QuestionsRepository):
     ViewModel(){
 
-    private val _currentQuestion = MutableStateFlow<Result?>(null)
+    /*private val _currentQuestion = MutableStateFlow<Result?>(null)
 
     val currentQuestion: StateFlow<Result?>
-        get() = _currentQuestion
+        get() = _currentQuestion*/
 
-    private val _questions = flow {
+    private val _questionsUiState = MutableStateFlow<QuestionsUiState?>(null)
+
+    val questionsUiState : StateFlow<QuestionsUiState?>
+        get() = _questionsUiState
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            val questions = questionsRepository.getQuestionOfTheDay()
+            val currentQuestion = questions[0]
+            _questionsUiState.update { QuestionsUiState(questions, URLDecoder.decode(currentQuestion.question, "UTF-8"), createPossibleAnswers(currentQuestion)) }
+            //TODO remove log
+            Log.d("questionUiState",_questionsUiState.value.toString())
+        }
+    }
+    private fun createPossibleAnswers(question: Result) : List<Answer>{
+        var answers = mutableListOf<Answer>()
+        answers.add(Answer(URLDecoder.decode(question.correctAnswer, "UTF-8"),true))
+
+        question.incorrectAnswers.forEach{
+            answers.add(Answer(URLDecoder.decode(it, "UTF-8"), false))
+        }
+        answers.shuffle()
+        return answers
+    }
+
+    /*private val _questions = flow {
         val questions = questionsRepository.getQuestionOfTheDay()
+        _currentQuestion.value = questions.first();
+
         emit(questions)
-    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())*/
     //Lazily = se lance dès que quelqu'un fait l'appel
     //viewModelScope = thread dans lequel se trouve les vues
 
-    val questions : StateFlow<List<Result>>
-        get() = _questions
+    /*val questions : StateFlow<List<Result>>
+        get() = _questions*/
 
     fun validateAnswers(index: Int){
         //gestion du score
-        _currentQuestion.update{
+        /*_currentQuestion.update{
             _questions.value.get(index)
-        }
+        }*/
 
     }
 
