@@ -12,6 +12,7 @@ class QuestionsRepository @Inject constructor (
 ){
 
     suspend fun getQuestionOfTheDay(): List<Result>{
+
         val response = api.getQuestions()
         return response.results
     }

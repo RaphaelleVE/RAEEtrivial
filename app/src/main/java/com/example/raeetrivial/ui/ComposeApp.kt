@@ -7,7 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.raeetrivial.login.LoginScreen
 import com.example.raeetrivial.ui.questions.QuestionsScreen
 import com.example.raeetrivial.ui.signup.SignUpScreen
-import com.example.raeetrivial.ranking.RankingScreen
+import com.example.raeetrivial.ui.ranking.RankingScreen
 
 @Composable
 fun ComposeApp () {
@@ -23,8 +23,9 @@ fun ComposeApp () {
             SignUpScreen(navController = navController)
         }
 
-        composable(Route.QUESTIONS){
+        composable(Route.QUESTIONS) {
             QuestionsScreen()
+        }
 
         composable(Route.RANKING){
             RankingScreen(navController = navController)
