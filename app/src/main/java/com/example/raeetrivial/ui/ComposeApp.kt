@@ -6,9 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.raeetrivial.ui.baseApp.BaseScreen
 import com.example.raeetrivial.ui.login.LoginScreen
-import com.example.raeetrivial.ui.questions.QuestionsScreen
 import com.example.raeetrivial.ui.signup.SignUpScreen
-import com.example.raeetrivial.ui.ranking.RankingScreen
 
 @Composable
 fun ComposeApp () {
