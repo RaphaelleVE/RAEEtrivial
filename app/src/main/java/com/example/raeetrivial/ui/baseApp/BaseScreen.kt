@@ -1,5 +1,7 @@
 package com.example.raeetrivial.ui.baseApp
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -7,6 +9,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
@@ -70,19 +73,22 @@ fun BaseScreen(navController: NavController) {
                 )
             }
         }
-    ){it.calculateBottomPadding()
-        NavHost(
-            navController = navBarController,
-            startDestination = Route.QUESTIONS
-        ) {
-            composable(Route.QUESTIONS){
-                QuestionsScreen()
-            }
-            composable(Route.RANKING){
-                RankingScreen(navController = navBarController)
-            }
-            composable(Route.PROFILE){
-                ProfileScreen()
+    ) { innerPadding ->
+        // Apply the padding globally to the whole BottomNavScreensController
+        Box(modifier = Modifier.padding(innerPadding)) {
+            NavHost(
+                navController = navBarController,
+                startDestination = Route.QUESTIONS
+            ) {
+                composable(Route.QUESTIONS) {
+                    QuestionsScreen()
+                }
+                composable(Route.RANKING) {
+                    RankingScreen(navController = navBarController)
+                }
+                composable(Route.PROFILE) {
+                    ProfileScreen()
+                }
             }
         }
     }
