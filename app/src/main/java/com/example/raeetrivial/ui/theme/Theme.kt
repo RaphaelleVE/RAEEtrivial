@@ -56,5 +56,6 @@ fun RAEETRIVIALTheme(
         typography = Typography,
         shapes = com.example.raeetrivial.ui.theme.Shapes,
         content = content
+
     )
 }

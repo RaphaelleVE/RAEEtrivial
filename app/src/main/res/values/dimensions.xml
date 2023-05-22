@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="miniSpacer">11dp</dimen>
+    <dimen name="questionSpacer">8dp</dimen>
     <dimen name="blockSpacer">30dp</dimen>
     <dimen name="loginPadding">30dp</dimen>
     <dimen name="bigButtonHeight">60dp</dimen>
