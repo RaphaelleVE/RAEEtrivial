@@ -39,7 +39,7 @@ fun RankingScreen(navController: NavController) {
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically) {
                         Row(horizontalArrangement = Arrangement.spacedBy(5.dp)){
-                            Text(text = it.toString())
+                            Text(text = (it + 1).toString())
                             Text(text = "UserName")
                             Text(text="Score : 000000")
                         }
