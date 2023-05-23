@@ -1,6 +1,5 @@
 package com.example.raeetrivial.ui.questions
 
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.raeetrivial.R
-import com.example.raeetrivial.domain.UserFirebase
 import com.example.raeetrivial.ui.baseApp.BaseViewModel
 import com.example.raeetrivial.ui.theme.MainDarkBleue
 import com.example.raeetrivial.ui.theme.Pink80
@@ -35,21 +33,22 @@ import com.example.raeetrivial.ui.theme.YellowWhite
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QuestionsScreen(baseViewModel : BaseViewModel) {
+fun QuestionsScreen(baseViewModel: BaseViewModel) {
     val viewModel = hiltViewModel<QuestionsViewModel>()
     val questionsUiState = viewModel.questionsUiState.collectAsState().value
 
     val context = LocalContext.current
-    var answered by remember {mutableStateOf(false)}
-    var buttonColor = YellowWhite
+    var answered by remember { mutableStateOf(false) }
+    var selectedIndex by remember { mutableStateOf(-1) }
 
     Column(
         Modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.loginPadding))) {
-            if (questionsUiState != null) {
-                Card (
-                    Modifier.fillMaxWidth(),
+            .padding(dimensionResource(id = R.dimen.loginPadding))
+    ) {
+        if (questionsUiState != null) {
+            Card(
+                Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
                     containerColor = YellowWhite,
                     contentColor = Color.Black
@@ -58,68 +57,81 @@ fun QuestionsScreen(baseViewModel : BaseViewModel) {
                     5.dp,
                     MainDarkBleue
                 ),
-                    elevation = CardDefaults.cardElevation(
-                        defaultElevation = 8.dp,
-                    ),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 8.dp,
+                ),
                 content = {
-                        Text( modifier = Modifier.padding(20.dp),
-                            fontSize = (17.sp),
-                            style = MaterialTheme.typography.titleMedium,
-                            text = questionsUiState.currentQuestion)
+                    Text(
+                        modifier = Modifier.padding(20.dp),
+                        fontSize = (17.sp),
+                        style = MaterialTheme.typography.titleMedium,
+                        text = questionsUiState.currentQuestion
+                    )
                 })
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(dimensionResource(id = R.dimen.miniSpacer))
+            )
+            questionsUiState.answers.forEachIndexed { index, it ->
+                Button(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp)
+                    .height(dimensionResource(id = R.dimen.bigButtonHeight)),
+                    shape = RoundedCornerShape(7.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (answered && selectedIndex == index) {
+                            if (it.isCorrect){
+                                Color.Green
+                            } else {
+                                Color.Red
+                            }
+                        } else {
+                            Color.Gray
+                        },
+                        contentColor = Color.Black,
+                        disabledContainerColor = YellowWhite,
+
+                        ),
+                    elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 8.dp,
+                        pressedElevation = 1.dp
+                    ),
+                    onClick = {
+                        selectedIndex = index
+                        viewModel.validateAnswers(it, context, baseViewModel)
+                        answered = true
+                    }
+                ) {
+                    Row {
+                        Icon(
+                            modifier = Modifier.rotate(90F),
+                            painter = painterResource(
+                                id =
+                                R.drawable.ic_triangle_48px
+                            ),
+                            tint = Pink80,
+                            contentDescription = "Icon response"
+
+                        )
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(dimensionResource(id = R.dimen.miniSpacer)),
+                            fontSize = (17.sp),
+                            text = it.text,
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                    }
+                }
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(dimensionResource(id = R.dimen.miniSpacer))
+                        .padding(dimensionResource(id = R.dimen.questionSpacer))
                 )
-                questionsUiState.answers.forEach{
-                    if (answered) buttonColor = it.buttonColor
-                   Button(modifier = Modifier
-                       .fillMaxWidth()
-                       .padding(15.dp)
-                       .height(dimensionResource(id = R.dimen.bigButtonHeight)),
-                        shape = RoundedCornerShape(7.dp),
-                       colors = ButtonDefaults.buttonColors(
-                           containerColor = buttonColor,
-                           contentColor = Color.Black,
-                           disabledContainerColor = YellowWhite
-                       ),
-                        elevation = ButtonDefaults.buttonElevation(
-                            defaultElevation = 8.dp,
-                            pressedElevation = 1.dp
-                        ),
-                        onClick = {
-                            viewModel.validateAnswers(it,context,baseViewModel)
-                            answered = true
-                        }
-                    ) {
-                        Row {
-                            Icon(
-                                modifier = Modifier.rotate(90F),
-                                painter = painterResource (id =
-                                    R.drawable.ic_triangle_48px),
-                                tint = Pink80,
-                                contentDescription = "Icon response"
-
-                            )
-                            Text(
-                               modifier = Modifier
-                                   .fillMaxWidth()
-                                   .padding(dimensionResource(id = R.dimen.miniSpacer)),
-                                fontSize = (17.sp),
-                                text = it.text,
-                                style = MaterialTheme.typography.titleMedium,
-                            )
-                        }
-                    }
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(dimensionResource(id = R.dimen.questionSpacer))
-                    )
-                }
-
             }
+
+        }
 
     }
 

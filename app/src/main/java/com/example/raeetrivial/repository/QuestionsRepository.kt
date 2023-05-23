@@ -80,8 +80,8 @@ class QuestionsRepository @Inject constructor (
         return currentDate.toString()
     }
 
-    companion object{
+    companion object {
         private const val _collection: String = "QUESTIONS_OF_THE_DAY"
 
-
+    }
 }
