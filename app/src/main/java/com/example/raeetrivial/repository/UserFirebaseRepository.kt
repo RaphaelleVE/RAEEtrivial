@@ -21,6 +21,11 @@ class UserFirebaseRepository @Inject constructor(private val firestore: Firebase
         return firestore.collection(_collection).snapshots().map { it.toObjects<UserFirebase>() }
     }
 
+    fun getUser(): Flow<List<UserFirebase>> {
+        return firestore.collection(_collection).snapshots().map {
+            it.toObjects<UserFirebase>() }
+    }
+
     //companion object gère les constantes, équivalent du static
     companion object {
         private const val _collection: String = "USERS"
