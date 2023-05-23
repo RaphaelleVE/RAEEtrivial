@@ -9,6 +9,7 @@ import com.example.raeetrivial.network.model.Result
 import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.firestore.ktx.toObject
 import kotlinx.coroutines.flow.first
+import okio.ByteString.Companion.encodeUtf8
 import java.net.URLDecoder
 import java.time.LocalDate
 
@@ -19,21 +20,9 @@ class QuestionsRepository @Inject constructor (
     private val api: QuestionsOfTheDayApi
 
 ){
-
-
-        suspend fun initQuestions(){
-            val response = api.getQuestions()
-            val questions : MutableList<Question> = arrayListOf()
-            for(result in response.results){
-                questions.add(buildQuestion(result))
-            }
-            val questionsOfTheDay=QuestionsOfTheDay(questions)
-            insertQuestionsOfTheDay(questionsOfTheDay)
-        }
-
         suspend fun getQuestionsOfTheDay(): QuestionsOfTheDay? {
 
-            val questionsOfTheDay = firestore.collection(_collection).document(getQuestionsId()).snapshots().first().toObject<QuestionsOfTheDay>()
+            var questionsOfTheDay = firestore.collection(_collection).document(getQuestionsId()).snapshots().first().toObject<QuestionsOfTheDay>()
 
             if(questionsOfTheDay == null){
                 val response = api.getQuestions()
@@ -42,6 +31,7 @@ class QuestionsRepository @Inject constructor (
                     questions.add(buildQuestion(result))
                 }
                 insertQuestionsOfTheDay(QuestionsOfTheDay(questions))
+                questionsOfTheDay = QuestionsOfTheDay((questions))
             }
 
             return questionsOfTheDay
@@ -55,7 +45,7 @@ class QuestionsRepository @Inject constructor (
 
         fun buildQuestion(result: Result): Question{
             val answers = createPossibleAnswers(result)
-            return Question(result.category, answers, result.difficulty, URLDecoder.decode(result.question, "UTF-8"), result.type)
+            return Question(result.category, answers, result.difficulty, result.question.encodeUtf8().utf8(), result.type)
         }
 
         private fun createPossibleAnswers(question: Result) : List<Answer>{
