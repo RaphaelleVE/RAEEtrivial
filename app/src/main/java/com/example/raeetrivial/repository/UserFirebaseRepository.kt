@@ -5,6 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.firestore.ktx.toObjects
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -18,7 +19,8 @@ class UserFirebaseRepository @Inject constructor(private val firestore: Firebase
     }
 
     fun getAll(): Flow<List<UserFirebase>> {
-        return firestore.collection(_collection).snapshots().map { it.toObjects<UserFirebase>() }
+        return firestore.collection(_collection).snapshots().map {
+            it.toObjects<UserFirebase>() }
     }
 
     fun getUser(): Flow<List<UserFirebase>> {
