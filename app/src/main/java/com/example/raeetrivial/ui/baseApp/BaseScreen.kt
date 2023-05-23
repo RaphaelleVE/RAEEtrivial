@@ -1,17 +1,8 @@
 package com.example.raeetrivial.ui.baseApp
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarDefaults
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,10 +18,6 @@ import com.example.raeetrivial.ui.ranking.RankingScreen
 import com.example.raeetrivial.ui.Route
 import com.example.raeetrivial.ui.profile.ProfileScreen
 import com.example.raeetrivial.ui.questions.QuestionsScreen
-import com.example.raeetrivial.ui.questions.QuestionsViewModel
-import com.example.raeetrivial.ui.theme.BlueWhite
-import com.example.raeetrivial.ui.theme.MainDarkBleue
-import com.example.raeetrivial.ui.theme.MainYellow
 import com.example.raeetrivial.ui.theme.YellowWhite
 
 
@@ -41,6 +28,23 @@ fun BaseScreen(navController: NavController) {
 
     val navBarController = rememberNavController()
     Scaffold (
+        topBar = {
+                 CenterAlignedTopAppBar(
+                     title = {Text(text = "Trivial Pursuit")},
+                     colors= TopAppBarDefaults.smallTopAppBarColors(containerColor = YellowWhite),
+                     actions = {
+                         IconButton(onClick = {
+                             viewModel.logout()
+                             navController.navigate(Route.SIGNUP)
+                         }) {
+                             Icon(
+                                 painterResource(id = R.drawable.ic_logout),
+                                 contentDescription = stringResource(R.string.logout))
+                         }
+                     },
+
+                 )
+        },
         containerColor = MaterialTheme.colorScheme.primary,
         bottomBar = {
             NavigationBar (containerColor = YellowWhite,
@@ -107,7 +111,7 @@ fun BaseScreen(navController: NavController) {
                     RankingScreen(navController = navBarController)
                 }
                 composable(Route.PROFILE) {
-                    ProfileScreen()
+                    ProfileScreen(baseViewModel = viewModel)
                 }
             }
         }
