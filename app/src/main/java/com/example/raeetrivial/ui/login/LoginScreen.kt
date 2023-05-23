@@ -1,5 +1,6 @@
 package com.example.raeetrivial.ui.login
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,14 +24,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,9 +37,12 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.raeetrivial.R
 import com.example.raeetrivial.ui.Route
+import com.example.raeetrivial.repository.AuthRepository
+import com.example.raeetrivial.ui.signup.SignupViewModel
 import com.example.raeetrivial.ui.theme.RAEETRIVIALTheme
 import com.example.raeetrivial.ui.theme.YellowWhite
 
@@ -49,31 +50,48 @@ import com.example.raeetrivial.ui.theme.YellowWhite
 @Composable
 fun LoginScreen(navController: NavController) {
 
+    val viewModel = hiltViewModel<LoginViewModel>()
+    val context = LocalContext.current
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val isConnected = viewModel.loginFlow.collectAsState().value;
 
-    Column (modifier = Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colorScheme.primary)
-        .padding(dimensionResource(id = R.dimen.loginPadding)),
+    LaunchedEffect(key1 = isConnected, block = {
+        if (viewModel.loginFlow.value == true) {
+            Toast.makeText(context, "Connexion réussie", Toast.LENGTH_SHORT).show()
+            navController.navigate(Route.BASE)
+        } else {
+            Toast.makeText(context, "Connexion échouée", Toast.LENGTH_SHORT).show()
+        }
+    })
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.primary)
+            .padding(dimensionResource(id = R.dimen.loginPadding)),
         verticalArrangement = Arrangement.Center
-    ){
+    ) {
         Image(
             painter = painterResource(id = R.drawable.trivial_logo),
-            contentDescription = "logo trivial" ,
+            contentDescription = "logo trivial",
             Modifier
                 .fillMaxWidth()
                 .size(200.dp),
             contentScale = ContentScale.Fit,
 
             )
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .padding(dimensionResource(id = R.dimen.blockSpacer)))
-        TextField(modifier = Modifier.fillMaxWidth()
-            .height(dimensionResource(id = R.dimen.editTextHeight)),
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(id = R.dimen.blockSpacer))
+        )
+        TextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(dimensionResource(id = R.dimen.editTextHeight)),
             value = email,
-            onValueChange ={
+            onValueChange = {
                 email = it
             },
             colors = TextFieldDefaults.textFieldColors(
@@ -91,14 +109,17 @@ fun LoginScreen(navController: NavController) {
                 imeAction = ImeAction.Next
             )
         )
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .padding(dimensionResource(id = R.dimen.miniSpacer)))
-        TextField(modifier = Modifier
-            .fillMaxWidth()
-            .height(dimensionResource(id = R.dimen.editTextHeight)),
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(id = R.dimen.miniSpacer))
+        )
+        TextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(dimensionResource(id = R.dimen.editTextHeight)),
             value = password,
-            onValueChange ={
+            onValueChange = {
                 password = it
             },
             colors = TextFieldDefaults.textFieldColors(
@@ -116,9 +137,11 @@ fun LoginScreen(navController: NavController) {
                 imeAction = ImeAction.Next
             )
         )
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .padding(dimensionResource(id = R.dimen.blockSpacer)))
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(id = R.dimen.blockSpacer))
+        )
         Button(modifier = Modifier
             .fillMaxWidth()
             .height(dimensionResource(id = R.dimen.bigButtonHeight)),
@@ -128,18 +151,21 @@ fun LoginScreen(navController: NavController) {
             ),
             shape = RoundedCornerShape(7.dp),
             onClick = {
-                navController.navigate(Route.BASE)
+                viewModel.loginUser(email, password)
+                //TODO LOGIN
             }
-        ){
+        ) {
             Text(
                 fontSize = (20.sp),
-                text =  stringResource(id = R.string.signin),
+                text = stringResource(id = R.string.signin),
                 style = MaterialTheme.typography.titleMedium
             )
         }
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .padding(dimensionResource(id = R.dimen.miniSpacer)))
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(id = R.dimen.miniSpacer))
+        )
         Button(modifier = Modifier
             .fillMaxWidth()
             .height(dimensionResource(id = R.dimen.bigButtonHeight)),
@@ -151,13 +177,13 @@ fun LoginScreen(navController: NavController) {
             onClick = {
                 navController.navigate(Route.SIGNUP)
             }
-        ){
+        ) {
             Text(
                 fontSize = (20.sp),
-                text =  stringResource(id = R.string.not_register_signup),
+                text = stringResource(id = R.string.not_register_signup),
                 style = MaterialTheme.typography.titleMedium
             )
         }
     }
-    
+
 }
