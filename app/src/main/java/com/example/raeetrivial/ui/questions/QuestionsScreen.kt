@@ -99,8 +99,10 @@ fun QuestionsScreen(baseViewModel: BaseViewModel) {
                     ),
                     onClick = {
                         selectedIndex = index
-                        viewModel.validateAnswers(it, context, baseViewModel)
                         answered = true
+                        viewModel.validateAnswers(it, context, baseViewModel)
+
+
                     }
                 ) {
                     Row {

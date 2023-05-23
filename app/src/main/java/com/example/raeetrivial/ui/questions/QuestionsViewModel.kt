@@ -19,10 +19,6 @@ import okio.ByteString.Companion.encodeUtf8
 class QuestionsViewModel @Inject constructor(private val questionsRepository: QuestionsRepository):
     ViewModel(){
 
-    /*private val _currentQuestion = MutableStateFlow<Result?>(null)
-
-    val currentQuestion: StateFlow<Result?>
-        get() = _currentQuestion*/
 
     private val _questionsUiState = MutableStateFlow<QuestionsUiState?>(null)
     val questionsUiState : StateFlow<QuestionsUiState?>
@@ -57,6 +53,7 @@ class QuestionsViewModel @Inject constructor(private val questionsRepository: Qu
     fun validateAnswers(answer : Answer, context : Context, baseViewModel : BaseViewModel){
         if(answer.isCorrect) baseViewModel.baseUserFlow.value.score += 10
         Toast.makeText(context,baseViewModel.baseUserFlow.value.score.toString(), Toast.LENGTH_SHORT).show()
+
         //gestion du score
         /*_currentQuestion.update{
             _questions.value.get(index)

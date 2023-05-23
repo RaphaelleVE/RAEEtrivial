@@ -1,5 +1,6 @@
 package com.example.raeetrivial.repository
 
+import android.text.Html
 import com.example.raeetrivial.domain.Answer
 import com.example.raeetrivial.domain.Question
 import com.example.raeetrivial.domain.QuestionsOfTheDay
@@ -9,7 +10,6 @@ import com.example.raeetrivial.network.model.Result
 import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.firestore.ktx.toObject
 import kotlinx.coroutines.flow.first
-import okio.ByteString.Companion.encodeUtf8
 import java.net.URLDecoder
 import java.time.LocalDate
 
@@ -45,7 +45,7 @@ class QuestionsRepository @Inject constructor (
 
         fun buildQuestion(result: Result): Question{
             val answers = createPossibleAnswers(result)
-            return Question(result.category, answers, result.difficulty, result.question.encodeUtf8().utf8(), result.type)
+            return Question(result.category, answers, result.difficulty, Html.fromHtml(result.question).toString(), result.type)
         }
 
         private fun createPossibleAnswers(question: Result) : List<Answer>{
