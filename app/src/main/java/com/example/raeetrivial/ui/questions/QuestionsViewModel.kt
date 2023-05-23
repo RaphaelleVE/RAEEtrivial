@@ -3,21 +3,28 @@ package com.example.raeetrivial.ui.questions
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.raeetrivial.domain.Answer
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
+import com.example.raeetrivial.network.model.Result
+import com.example.raeetrivial.repository.AuthRepository
 import com.example.raeetrivial.repository.QuestionsRepository
 import com.example.raeetrivial.ui.baseApp.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.net.URLDecoder
 import okio.ByteString.Companion.encodeUtf8
 
 @HiltViewModel
-class QuestionsViewModel @Inject constructor(private val questionsRepository: QuestionsRepository):
-    ViewModel(){
+class QuestionsViewModel @Inject constructor(
+    private val questionsRepository: QuestionsRepository,
+    private val authRepository: AuthRepository
+    ): ViewModel(){
 
 
     private val _questionsUiState = MutableStateFlow<QuestionsUiState?>(null)
