@@ -20,7 +20,8 @@ class UserFirebaseRepository @Inject constructor(private val firestore: Firebase
 
     fun getAll(): Flow<List<UserFirebase>> {
         return firestore.collection(_collection).snapshots().map {
-            it.toObjects<UserFirebase>() }
+            it.toObjects<UserFirebase>()
+        }
     }
 
     fun getUser(): Flow<List<UserFirebase>> {

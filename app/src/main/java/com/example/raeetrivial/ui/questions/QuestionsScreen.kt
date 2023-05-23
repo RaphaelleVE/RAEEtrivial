@@ -87,7 +87,7 @@ fun QuestionsScreen(baseViewModel: BaseViewModel) {
                                 Color.Red
                             }
                         } else {
-                            Color.Gray
+                            YellowWhite
                         },
                         contentColor = Color.Black,
                         disabledContainerColor = YellowWhite,
