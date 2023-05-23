@@ -43,7 +43,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): UsersApi = retrofit.create(UsersApi::class.java)
+    fun provideApiService(retrofit: Retrofit): UsersApi =
+        retrofit.create(UsersApi::class.java)
 
     @Provides
     @Singleton
@@ -54,5 +55,4 @@ object NetworkModule {
     @Singleton
     fun provideQuestionsOfTheDayApiService(retrofit: Retrofit): QuestionsOfTheDayApi =
         retrofit.create(QuestionsOfTheDayApi::class.java)
-
 }
