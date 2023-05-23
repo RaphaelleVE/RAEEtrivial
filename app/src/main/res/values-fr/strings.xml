@@ -11,4 +11,5 @@
     <string name="game">Jeu</string>
     <string name="ranking">Classement</string>
     <string name="profile">Profile</string>
+    <string name="logout">déconnecter</string>
 </resources>
