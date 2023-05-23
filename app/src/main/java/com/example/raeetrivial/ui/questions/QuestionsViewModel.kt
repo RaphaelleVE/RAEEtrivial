@@ -3,10 +3,8 @@ package com.example.raeetrivial.ui.questions
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.raeetrivial.domain.Answer
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
-import com.example.raeetrivial.network.model.Result
 import com.example.raeetrivial.repository.QuestionsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -29,22 +27,16 @@ class QuestionsViewModel @Inject constructor(private val questionsRepository: Qu
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val questions = questionsRepository.getQuestionOfTheDay()
-            val currentQuestion = questions[0]
-            _questionsUiState.update { QuestionsUiState(questions, URLDecoder.decode(currentQuestion.question, "UTF-8"), createPossibleAnswers(currentQuestion)) }
+            val questionsOfTheDay = questionsRepository.getQuestionsOfTheDay()
+            if(questionsOfTheDay != null){
+                val currentQuestion = questionsOfTheDay.questions[0]
+
+                _questionsUiState.update { QuestionsUiState(questionsOfTheDay, URLDecoder.decode(currentQuestion.question, "UTF-8"), currentQuestion.answers) }
+            }
+
             //TODO remove log
             Log.d("questionUiState",_questionsUiState.value.toString())
         }
-    }
-    private fun createPossibleAnswers(question: Result) : List<Answer>{
-        var answers = mutableListOf<Answer>()
-        answers.add(Answer(URLDecoder.decode(question.correctAnswer, "UTF-8"),true))
-
-        question.incorrectAnswers.forEach{
-            answers.add(Answer(URLDecoder.decode(it, "UTF-8"), false))
-        }
-        answers.shuffle()
-        return answers
     }
 
     /*private val _questions = flow {
