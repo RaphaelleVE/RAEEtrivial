@@ -18,14 +18,14 @@ import androidx.core.view.ViewCompat
 
 private val DarkColorScheme = darkColorScheme(
     primary = MainDarkBleue,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    secondary = MainYellow,
+    tertiary = YellowWhite,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = MainDarkBleue,
+    secondary = MainYellow,
+    tertiary = YellowWhite
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -49,10 +49,13 @@ fun RAEETRIVIALTheme(
         LightColorScheme
     }
 
+
+
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
         shapes = com.example.raeetrivial.ui.theme.Shapes,
         content = content
+
     )
 }

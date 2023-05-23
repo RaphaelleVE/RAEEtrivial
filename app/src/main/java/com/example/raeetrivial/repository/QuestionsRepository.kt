@@ -20,6 +20,7 @@ class QuestionsRepository @Inject constructor (
 
 ){
 
+
         suspend fun initQuestions(){
             val response = api.getQuestions()
             val questions : MutableList<Question> = arrayListOf()
@@ -81,6 +82,6 @@ class QuestionsRepository @Inject constructor (
 
     companion object{
         private const val _collection: String = "QUESTIONS_OF_THE_DAY"
-    }
+
 
 }
