@@ -77,7 +77,7 @@ fun QuestionsScreen(baseViewModel: BaseViewModel) {
                 Button(modifier = Modifier
                     .fillMaxWidth()
                     .padding(15.dp)
-                    .height(dimensionResource(id = R.dimen.bigButtonHeight)),
+                    .height(dimensionResource(id = R.dimen.answerButtonHeight)),
                     shape = RoundedCornerShape(7.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (answered && selectedIndex == index) {
@@ -91,7 +91,6 @@ fun QuestionsScreen(baseViewModel: BaseViewModel) {
                         },
                         contentColor = Color.Black,
                         disabledContainerColor = YellowWhite,
-
                         ),
                     elevation = ButtonDefaults.buttonElevation(
                         defaultElevation = 8.dp,
@@ -124,11 +123,7 @@ fun QuestionsScreen(baseViewModel: BaseViewModel) {
                         )
                     }
                 }
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(dimensionResource(id = R.dimen.questionSpacer))
-                )
+
             }
 
         }

@@ -56,7 +56,7 @@ fun LoginScreen(navController: NavController) {
     var password by remember { mutableStateOf("") }
     val isConnected = viewModel.loginFlow.collectAsState().value;
 
-    LaunchedEffect(key1 = isConnected, block = {
+    LaunchedEffect(key1 = isConnected,  block = {
         if (viewModel.loginFlow.value == true) {
             Toast.makeText(context, "Connexion réussie", Toast.LENGTH_SHORT).show()
             navController.navigate(Route.BASE)

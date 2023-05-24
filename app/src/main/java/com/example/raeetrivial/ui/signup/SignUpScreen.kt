@@ -1,5 +1,6 @@
 package com.example.raeetrivial.ui.signup
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,8 +48,20 @@ fun SignUpScreen(navController: NavController) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    var authResource = viewModel.signupFlow.collectAsState().value.triedRegister
 
-    val authResource = viewModel.signupFlow.collectAsState()
+    LaunchedEffect(authResource){
+        if(authResource) {
+            if (viewModel.signupFlow.value.registerSuccessfull) {
+                Toast.makeText(context, "Inscription réussie", Toast.LENGTH_SHORT).show()
+                navController.navigate(Route.BASE)
+            } else {
+                Toast.makeText(context, "Inscription échouée", Toast.LENGTH_SHORT).show()
+            }
+            authResource = false
+        }
+    }
 
     Column (modifier = Modifier.fillMaxSize()
         .background(MaterialTheme.colorScheme.primary)
@@ -159,7 +173,6 @@ fun SignUpScreen(navController: NavController) {
             ),
             onClick = {
                 viewModel.signupUser(email, password)
-                navController.navigate(Route.BASE)
             }
         ) {
             Text(

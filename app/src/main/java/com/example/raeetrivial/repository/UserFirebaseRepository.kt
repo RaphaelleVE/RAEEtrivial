@@ -7,15 +7,16 @@ import com.google.firebase.firestore.ktx.toObjects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class UserFirebaseRepository @Inject constructor(private val firestore: FirebaseFirestore) {
 
-    fun insertUser(id: String, user: UserFirebase): Boolean {
+    suspend fun insertUser(id: String, user: UserFirebase): Boolean {
         //le paramètre passé à document détermine son id. On lui passe l'id de firestore),
         // si le document existe il l'écrase, sinon il l'insère
         //si le set user s'est bien passé, ça renvoie le booleen isSuccessiful
-        return firestore.collection(_collection).document(id).set(user).isSuccessful
+             return firestore.collection(_collection).document(id).set(user).isSuccessful
     }
 
     fun getAll(): Flow<List<UserFirebase>> {

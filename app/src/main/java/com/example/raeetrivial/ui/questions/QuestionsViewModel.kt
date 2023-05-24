@@ -40,7 +40,6 @@ class QuestionsViewModel @Inject constructor(
             val questionsOfTheDay = questionsRepository.getQuestionsOfTheDay()
             if(questionsOfTheDay != null){
                 val currentQuestion = questionsOfTheDay.questions[0]
-
                 _questionsUiState.update { QuestionsUiState(questionsOfTheDay, currentQuestion.question.encodeUtf8().utf8(), currentQuestion.answers) }
             }
 
