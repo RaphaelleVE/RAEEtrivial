@@ -105,7 +105,7 @@ fun BaseScreen(navController: NavController) {
                 startDestination = Route.QUESTIONS
             ) {
                 composable(Route.QUESTIONS) {
-                    QuestionsScreen(baseViewModel = viewModel)
+                    QuestionsScreen(globalUser = viewModel.currentUser)
                 }
                 composable(Route.RANKING) {
                     RankingScreen(navController = navBarController)
