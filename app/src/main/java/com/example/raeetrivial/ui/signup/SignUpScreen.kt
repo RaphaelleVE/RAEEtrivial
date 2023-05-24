@@ -16,7 +16,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -178,8 +177,7 @@ fun SignUpScreen(navController: NavController) {
                 contentColor = YellowWhite
             ),
             onClick = {
-                // viewModel.signupUser(email, password)
-                if (viewModel.confirmationPasswordCheck(email, password, confirmationPassword)) {
+                if (viewModel.confirmationPasswordCheck(password, confirmationPassword)) {
                     viewModel.signupUser(email, password)
                 } else {
                     Toast.makeText(context, "Not the same passwords ! ", Toast.LENGTH_SHORT).show()

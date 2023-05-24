@@ -1,8 +1,6 @@
 package com.example.raeetrivial.ui.signup
 
 
-import android.widget.Toast
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.raeetrivial.repository.AuthRepository
@@ -58,7 +56,6 @@ class SignupViewModel @Inject constructor(
     }
 
     fun confirmationPasswordCheck(
-        email: String,
         password: String,
         confirmationPassword: String
     ): Boolean {
