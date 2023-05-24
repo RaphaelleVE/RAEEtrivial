@@ -48,6 +48,7 @@ fun SignUpScreen(navController: NavController) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var confirmationPassword by remember { mutableStateOf("") }
     val context = LocalContext.current
     var isTriedRegister = viewModel.tryRegisterFlow.collectAsState().value
 
@@ -142,9 +143,9 @@ fun SignUpScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(dimensionResource(id = R.dimen.editTextHeight)),
-            value = password,
+            value = confirmationPassword,
             onValueChange = {
-                password = it
+                confirmationPassword = it
             },
             shape = RoundedCornerShape(7.dp),
             colors = TextFieldDefaults.textFieldColors(
@@ -177,7 +178,12 @@ fun SignUpScreen(navController: NavController) {
                 contentColor = YellowWhite
             ),
             onClick = {
-                viewModel.signupUser(email, password)
+                // viewModel.signupUser(email, password)
+                if (viewModel.confirmationPasswordCheck(email, password, confirmationPassword)) {
+                    viewModel.signupUser(email, password)
+                } else {
+                    Toast.makeText(context, "Not the same passwords ! ", Toast.LENGTH_SHORT).show()
+                }
             }
         ) {
             Text(
