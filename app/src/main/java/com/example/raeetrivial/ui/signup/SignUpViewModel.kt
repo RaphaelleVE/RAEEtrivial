@@ -26,15 +26,21 @@ class SignupViewModel @Inject constructor(
     private val _signupFlow = MutableStateFlow<SignUpUiState>(SignUpUiState(registerSuccessfull = false, triedRegister = false))
     val signupFlow: StateFlow<SignUpUiState> = _signupFlow
 
+    private val _tryRegisterFlow = MutableStateFlow<Boolean>(false)
+    val tryRegisterFlow: StateFlow<Boolean> = _tryRegisterFlow
+
+    private val _succesRegisterFlow = MutableStateFlow<Boolean>(false)
+    val succesRegisterFlow: StateFlow<Boolean> = _succesRegisterFlow
+
     fun signupUser(email:String, password:String){
         //lance un thread, càd une coroutine
         viewModelScope.launch(Dispatchers.IO) {
            val uid = registerUser(email, password)
             if(uid != null) {
                 registerUserinFirebase(uid, email)
-                _signupFlow.value.registerSuccessfull = true
+                _succesRegisterFlow.value = true
             }
-            _signupFlow.value.triedRegister = true
+            _tryRegisterFlow.value = true
         }
     }
 

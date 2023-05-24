@@ -49,21 +49,21 @@ fun SignUpScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val context = LocalContext.current
-    var authResource = viewModel.signupFlow.collectAsState().value.triedRegister
+    var isTriedRegister = viewModel.tryRegisterFlow.collectAsState().value
 
-    LaunchedEffect(authResource){
-        if(authResource) {
-            if (viewModel.signupFlow.value.registerSuccessfull) {
-                Toast.makeText(context, "Inscription réussie", Toast.LENGTH_SHORT).show()
+    LaunchedEffect(isTriedRegister){
+        if(isTriedRegister) {
+            if (viewModel.succesRegisterFlow.value) {
                 navController.navigate(Route.BASE)
             } else {
                 Toast.makeText(context, "Inscription échouée", Toast.LENGTH_SHORT).show()
             }
-            authResource = false
+        isTriedRegister = false
         }
     }
 
-    Column (modifier = Modifier.fillMaxSize()
+    Column (modifier = Modifier
+        .fillMaxSize()
         .background(MaterialTheme.colorScheme.primary)
         .padding(dimensionResource(id = R.dimen.loginPadding)),
     verticalArrangement = Arrangement.Center
@@ -83,7 +83,8 @@ fun SignUpScreen(navController: NavController) {
                 .padding(dimensionResource(id = R.dimen.blockSpacer))
         )
         TextField(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(dimensionResource(id = R.dimen.editTextHeight)),
             value = email,
             onValueChange = {
@@ -110,7 +111,8 @@ fun SignUpScreen(navController: NavController) {
                 .padding(dimensionResource(id = R.dimen.miniSpacer))
         )
         TextField(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(dimensionResource(id = R.dimen.editTextHeight)),
             value = password,
             onValueChange = {
@@ -137,7 +139,8 @@ fun SignUpScreen(navController: NavController) {
                 .padding(dimensionResource(id = R.dimen.miniSpacer))
         )
         TextField(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(dimensionResource(id = R.dimen.editTextHeight)),
             value = password,
             onValueChange = {
@@ -165,7 +168,9 @@ fun SignUpScreen(navController: NavController) {
                 .padding(dimensionResource(id = R.dimen.blockSpacer))
         )
 
-        Button(modifier = Modifier.fillMaxWidth().height(60.dp),
+        Button(modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp),
             shape = RoundedCornerShape(7.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
@@ -186,7 +191,9 @@ fun SignUpScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(dimensionResource(id = R.dimen.miniSpacer))
         )
-        Button(modifier = Modifier.fillMaxWidth().height(60.dp),
+        Button(modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = MaterialTheme.colorScheme.secondary,
                 containerColor = YellowWhite
