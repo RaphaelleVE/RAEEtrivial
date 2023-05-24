@@ -1,5 +1,6 @@
 package com.example.raeetrivial.repository
 
+import com.example.raeetrivial.domain.CurrentQuestionOfTheDay
 import com.example.raeetrivial.domain.UserFirebase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.snapshots
@@ -7,9 +8,7 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class UserFirebaseRepository @Inject constructor(private val authRepository : AuthRepository , private val firestore: FirebaseFirestore) {
@@ -54,6 +53,20 @@ class UserFirebaseRepository @Inject constructor(private val authRepository : Au
         if(uid != null){
             firestore.collection(_collection).document(uid).set(user)
         }
+    }
+
+    suspend fun createCurrentQuestionOfTheDay(questionsId: String) {
+        val user = getCurrentUser()
+        if(user != null){
+            val currentQuestionOfTheDay = user.currentQuestionOfTheDays.filter {
+                    currentQuestionOfTheDay -> currentQuestionOfTheDay.date == questionsId
+                }
+            if(currentQuestionOfTheDay.isEmpty()){
+                user.currentQuestionOfTheDays.add(CurrentQuestionOfTheDay(questionsId,0))
+                updateCurrentUser(user)
+            }
+        }
+
     }
 
     //companion object gère les constantes, équivalent du static

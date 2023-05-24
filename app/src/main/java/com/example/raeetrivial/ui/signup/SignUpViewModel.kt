@@ -6,13 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.raeetrivial.repository.AuthRepository
 import com.example.raeetrivial.repository.UserFirebaseRepository
 import com.example.raeetrivial.domain.UserFirebase
-import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 import javax.inject.Inject
 
 @HiltViewModel
@@ -49,7 +47,7 @@ class SignupViewModel @Inject constructor(
     }
 
     suspend fun registerUserinFirebase(uid : String, email: String){
-        firebaseRepository.insertUser(uid, UserFirebase(email,0,0))
+        firebaseRepository.insertUser(uid, UserFirebase(email,0, mutableListOf()))
     }
 
 }
