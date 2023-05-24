@@ -1,5 +1,6 @@
 package com.example.raeetrivial.repository
 
+import android.text.Html
 import com.example.raeetrivial.domain.Answer
 import com.example.raeetrivial.domain.Question
 import com.example.raeetrivial.domain.QuestionsOfTheDay
@@ -9,8 +10,6 @@ import com.example.raeetrivial.network.model.Result
 import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.firestore.ktx.toObject
 import kotlinx.coroutines.flow.first
-import okio.ByteString.Companion.encodeUtf8
-import java.net.URLDecoder
 import java.time.LocalDate
 
 import javax.inject.Inject
@@ -43,24 +42,24 @@ class QuestionsRepository @Inject constructor (
                 _subCollection).snapshots().map { it.toObjects<Question>()}
         }*/
 
-        fun buildQuestion(result: Result): Question{
+        private fun buildQuestion(result: Result): Question{
             val answers = createPossibleAnswers(result)
-            return Question(result.category, answers, result.difficulty, result.question.encodeUtf8().utf8(), result.type)
+            return Question(result.category, answers, result.difficulty, Html.fromHtml(result.question).toString(), result.type)
         }
 
         private fun createPossibleAnswers(question: Result) : List<Answer>{
             val answers = mutableListOf<Answer>()
-            answers.add(Answer(URLDecoder.decode(question.correctAnswer, "UTF-8"),true))
+            answers.add(Answer(Html.fromHtml(question.correctAnswer).toString(),true))
 
             question.incorrectAnswers.forEach{
-                answers.add(Answer(URLDecoder.decode(it, "UTF-8"), false))
+                answers.add(Answer(Html.fromHtml(it).toString(), false))
             }
             answers.shuffle()
             return answers
         }
 
 
-    fun insertQuestionsOfTheDay(questionsOfTheDay : QuestionsOfTheDay) : Boolean{
+    private fun insertQuestionsOfTheDay(questionsOfTheDay : QuestionsOfTheDay) : Boolean{
         return firestore.collection(_collection).document(getQuestionsId()).set(questionsOfTheDay).isSuccessful
     }
 

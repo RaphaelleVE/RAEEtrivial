@@ -5,6 +5,7 @@ import com.example.raeetrivial.domain.QuestionsOfTheDay
 
 data class QuestionsUiState(
     var questions: QuestionsOfTheDay,
-    var currentQuestion : String,
-    var answers: List<Answer>
+    var currentQuestion : String = "",
+    var answers: List<Answer> = emptyList(),
+    var answered: Boolean = false
 )

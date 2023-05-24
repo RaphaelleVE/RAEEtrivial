@@ -1,13 +1,11 @@
 package com.example.raeetrivial.ui
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.raeetrivial.ui.baseApp.BaseScreen
 import com.example.raeetrivial.ui.login.LoginScreen
-import com.example.raeetrivial.ui.profile.ProfileScreen
 import com.example.raeetrivial.ui.signup.SignUpScreen
 
 @Composable
