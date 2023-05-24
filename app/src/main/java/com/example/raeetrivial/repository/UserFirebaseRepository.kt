@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class UserFirebaseRepository @Inject constructor(private val authRepository : AuthRepository , private val firestore: FirebaseFirestore) {
 
-    suspend fun insertUser(id: String, user: UserFirebase): Boolean {
+    fun insertUser(id: String, user: UserFirebase): Boolean {
         //le paramètre passé à document détermine son id. On lui passe l'id de firestore),
         // si le document existe il l'écrase, sinon il l'insère
         //si le set user s'est bien passé, ça renvoie le booleen isSuccessiful
@@ -40,6 +40,20 @@ class UserFirebaseRepository @Inject constructor(private val authRepository : Au
         return null
 
 
+    }
+
+    suspend fun increaseCurrentUserScore(score: Int) {
+        val user = getCurrentUser()
+        if(user != null){
+            user.score += score
+            updateCurrentUser(user)
+        }
+    }
+    fun updateCurrentUser(user: UserFirebase){
+        val uid = authRepository.currentUser?.uid
+        if(uid != null){
+            firestore.collection(_collection).document(uid).set(user)
+        }
     }
 
     //companion object gère les constantes, équivalent du static

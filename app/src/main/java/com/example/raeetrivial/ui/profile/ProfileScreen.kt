@@ -20,14 +20,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.raeetrivial.R
 
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen() {
 
     val viewModel = hiltViewModel<ProfileViewModel>()
-
     val currentUser = viewModel.currentUser.collectAsState().value
-
 
     Column() {
 

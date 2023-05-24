@@ -26,18 +26,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.raeetrivial.R
-import com.example.raeetrivial.ui.baseApp.BaseViewModel
+import com.example.raeetrivial.domain.UserFirebase
 import com.example.raeetrivial.ui.theme.MainDarkBleue
 import com.example.raeetrivial.ui.theme.Pink80
 import com.example.raeetrivial.ui.theme.YellowWhite
+import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QuestionsScreen(baseViewModel: BaseViewModel) {
+fun QuestionsScreen(globalUser : StateFlow<UserFirebase?>) {
     val viewModel = hiltViewModel<QuestionsViewModel>()
     val questionsUiState = viewModel.questionsUiState.collectAsState().value
 
     val context = LocalContext.current
+    val currentUser = globalUser.collectAsState().value
 
     var selectedIndex by remember { mutableStateOf(-1) }
 
@@ -98,7 +100,8 @@ fun QuestionsScreen(baseViewModel: BaseViewModel) {
                     ),
                     onClick = {
                         selectedIndex = index
-                        viewModel.validateAnswers(it, context, baseViewModel)
+                        viewModel.validateAnswers(it)
+                        //currentUser!!.score +=10
                     }
                 ) {
                     Row {
