@@ -1,5 +1,6 @@
 package com.example.raeetrivial.ui.signup
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,10 +48,22 @@ fun SignUpScreen(navController: NavController) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    var isTriedRegister = viewModel.tryRegisterFlow.collectAsState().value
 
-    val authResource = viewModel.signupFlow.collectAsState()
+    LaunchedEffect(isTriedRegister){
+        if(isTriedRegister) {
+            if (viewModel.succesRegisterFlow.value) {
+                navController.navigate(Route.BASE)
+            } else {
+                Toast.makeText(context, "Inscription échouée", Toast.LENGTH_SHORT).show()
+            }
+        isTriedRegister = false
+        }
+    }
 
-    Column (modifier = Modifier.fillMaxSize()
+    Column (modifier = Modifier
+        .fillMaxSize()
         .background(MaterialTheme.colorScheme.primary)
         .padding(dimensionResource(id = R.dimen.loginPadding)),
     verticalArrangement = Arrangement.Center
@@ -69,7 +83,8 @@ fun SignUpScreen(navController: NavController) {
                 .padding(dimensionResource(id = R.dimen.blockSpacer))
         )
         TextField(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(dimensionResource(id = R.dimen.editTextHeight)),
             value = email,
             onValueChange = {
@@ -96,7 +111,8 @@ fun SignUpScreen(navController: NavController) {
                 .padding(dimensionResource(id = R.dimen.miniSpacer))
         )
         TextField(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(dimensionResource(id = R.dimen.editTextHeight)),
             value = password,
             onValueChange = {
@@ -123,7 +139,8 @@ fun SignUpScreen(navController: NavController) {
                 .padding(dimensionResource(id = R.dimen.miniSpacer))
         )
         TextField(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(dimensionResource(id = R.dimen.editTextHeight)),
             value = password,
             onValueChange = {
@@ -151,7 +168,9 @@ fun SignUpScreen(navController: NavController) {
                 .padding(dimensionResource(id = R.dimen.blockSpacer))
         )
 
-        Button(modifier = Modifier.fillMaxWidth().height(60.dp),
+        Button(modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp),
             shape = RoundedCornerShape(7.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
@@ -159,7 +178,6 @@ fun SignUpScreen(navController: NavController) {
             ),
             onClick = {
                 viewModel.signupUser(email, password)
-                navController.navigate(Route.BASE)
             }
         ) {
             Text(
@@ -173,7 +191,9 @@ fun SignUpScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(dimensionResource(id = R.dimen.miniSpacer))
         )
-        Button(modifier = Modifier.fillMaxWidth().height(60.dp),
+        Button(modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp),
             colors = ButtonDefaults.buttonColors(
                 contentColor = MaterialTheme.colorScheme.secondary,
                 containerColor = YellowWhite

@@ -79,7 +79,7 @@ fun QuestionsScreen(globalUser : StateFlow<UserFirebase?>) {
                 Button(modifier = Modifier
                     .fillMaxWidth()
                     .padding(15.dp)
-                    .height(dimensionResource(id = R.dimen.bigButtonHeight)),
+                    .height(dimensionResource(id = R.dimen.answerButtonHeight)),
                     shape = RoundedCornerShape(7.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = if (questionsUiState.answered && selectedIndex == index) {
@@ -89,11 +89,10 @@ fun QuestionsScreen(globalUser : StateFlow<UserFirebase?>) {
                                 Color.Red
                             }
                         } else {
-                            Color.Gray
+                            YellowWhite
                         },
                         contentColor = Color.Black,
                         disabledContainerColor = YellowWhite,
-
                         ),
                     elevation = ButtonDefaults.buttonElevation(
                         defaultElevation = 8.dp,
@@ -126,11 +125,7 @@ fun QuestionsScreen(globalUser : StateFlow<UserFirebase?>) {
                         )
                     }
                 }
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(dimensionResource(id = R.dimen.questionSpacer))
-                )
+
             }
 
         }
