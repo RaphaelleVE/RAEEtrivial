@@ -1,6 +1,6 @@
 package com.example.raeetrivial.domain
 
-data class Question (
+data class Question(
     val category: String = "",
     val answers: List<Answer> = emptyList(),
     val difficulty: String = "",
