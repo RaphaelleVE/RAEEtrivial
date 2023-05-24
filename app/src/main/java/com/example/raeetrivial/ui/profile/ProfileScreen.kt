@@ -16,27 +16,29 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.example.raeetrivial.domain.UserFirebase
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.raeetrivial.R
-import com.example.raeetrivial.ui.baseApp.BaseViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(baseViewModel: BaseViewModel) {
+fun ProfileScreen() {
 
-    val score = baseViewModel.baseUserFlow.collectAsState().value
+    val viewModel = hiltViewModel<ProfileViewModel>()
+
+    val currentUser = viewModel.currentUser.collectAsState().value
+
 
     Column() {
 
+    if(currentUser != null){
+        Column(modifier = Modifier.padding(10.dp)) {
 
-    Column(modifier = Modifier.padding(10.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Box(
                     modifier = Modifier
                         .size(150.dp)
@@ -44,28 +46,30 @@ fun ProfileScreen(baseViewModel: BaseViewModel) {
                         .background(Color.Cyan)
                 ) {
                     Image(painter = painterResource(R.drawable.pfp_raee),
-                          contentDescription = "profile pic",
-                          modifier = Modifier
-                              .fillMaxSize()
-                              .clip(CircleShape))
+                        contentDescription = "profile pic",
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape))
                 }
-                Text(text = "SAAAAAAAAA", textAlign = TextAlign.Left,
+                Text(text = currentUser.email, textAlign = TextAlign.Left,
                     fontSize = 25.sp,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp))
+            }
+        }
+
+        Column(modifier = Modifier.padding(10.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Text(text = "Score : " + currentUser.score, textAlign = TextAlign.Left, fontSize = 30.sp)
+            }
         }
     }
 
-    Column(modifier = Modifier.padding(10.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            Text(text = "Score : " + score.score, textAlign = TextAlign.Left, fontSize = 30.sp)
-        }
-    }
     }
 }

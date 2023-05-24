@@ -111,7 +111,7 @@ fun BaseScreen(navController: NavController) {
                     RankingScreen(navController = navBarController)
                 }
                 composable(Route.PROFILE) {
-                    ProfileScreen(baseViewModel = viewModel)
+                    ProfileScreen()
                 }
             }
         }
