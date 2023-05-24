@@ -38,7 +38,7 @@ fun QuestionsScreen(baseViewModel: BaseViewModel) {
     val questionsUiState = viewModel.questionsUiState.collectAsState().value
 
     val context = LocalContext.current
-    var answered by remember { mutableStateOf(false) }
+
     var selectedIndex by remember { mutableStateOf(-1) }
 
     Column(
@@ -80,7 +80,7 @@ fun QuestionsScreen(baseViewModel: BaseViewModel) {
                     .height(dimensionResource(id = R.dimen.bigButtonHeight)),
                     shape = RoundedCornerShape(7.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (answered && selectedIndex == index) {
+                        containerColor = if (questionsUiState.answered && selectedIndex == index) {
                             if (it.isCorrect){
                                 Color.Green
                             } else {
@@ -99,10 +99,7 @@ fun QuestionsScreen(baseViewModel: BaseViewModel) {
                     ),
                     onClick = {
                         selectedIndex = index
-                        answered = true
                         viewModel.validateAnswers(it, context, baseViewModel)
-
-
                     }
                 ) {
                     Row {

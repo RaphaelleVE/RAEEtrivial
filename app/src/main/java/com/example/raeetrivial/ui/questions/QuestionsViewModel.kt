@@ -2,22 +2,18 @@ package com.example.raeetrivial.ui.questions
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.raeetrivial.domain.Answer
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
-import com.example.raeetrivial.network.model.Result
 import com.example.raeetrivial.repository.AuthRepository
 import com.example.raeetrivial.repository.QuestionsRepository
 import com.example.raeetrivial.ui.baseApp.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import java.net.URLDecoder
 import okio.ByteString.Companion.encodeUtf8
 
 @HiltViewModel
@@ -37,7 +33,7 @@ class QuestionsViewModel @Inject constructor(
             if(questionsOfTheDay != null){
                 val currentQuestion = questionsOfTheDay.questions[0]
 
-                _questionsUiState.update { QuestionsUiState(questionsOfTheDay, currentQuestion.question.encodeUtf8().utf8(), currentQuestion.answers) }
+                _questionsUiState.update { QuestionsUiState(questionsOfTheDay, currentQuestion.question.encodeUtf8().utf8(), currentQuestion.answers, false) }
             }
 
             //TODO remove log
@@ -58,8 +54,13 @@ class QuestionsViewModel @Inject constructor(
         get() = _questions*/
 
     fun validateAnswers(answer : Answer, context : Context, baseViewModel : BaseViewModel){
-        if(answer.isCorrect) baseViewModel.baseUserFlow.value.score += 10
-        Toast.makeText(context,baseViewModel.baseUserFlow.value.score.toString(), Toast.LENGTH_SHORT).show()
+        _questionsUiState.update{QuestionsUiState(questionsUiState.value!!.questions, questionsUiState.value!!.currentQuestion,questionsUiState.value!!.answers, true)}
+        if(answer.isCorrect)
+            baseViewModel.baseUserFlow.value.score += 10
+        viewModelScope.launch {
+            delay(1000)
+            goToNextQuestion()
+        }
 
         //gestion du score
         /*_currentQuestion.update{
@@ -67,8 +68,15 @@ class QuestionsViewModel @Inject constructor(
         }*/
     }
 
-
-
+    fun goToNextQuestion() {
+        if(questionsUiState.value != null){
+            val currentQuestion = questionsUiState.value!!.questions.questions.get(1)
+            //.get()..questions[1];
+            if (currentQuestion != null) {
+                _questionsUiState.update{QuestionsUiState(questionsUiState.value!!.questions, currentQuestion.question, currentQuestion.answers, false)}
+            }
+        }
+    }
 
 
 }
