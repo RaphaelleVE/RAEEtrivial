@@ -22,6 +22,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -93,7 +94,8 @@ fun SignUpScreen(navController: NavController) {
             },
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = YellowWhite,
-                cursorColor = MaterialTheme.colorScheme.secondary
+                cursorColor = MaterialTheme.colorScheme.secondary,
+                textColor = Color.Black
             ),
             shape = RoundedCornerShape(7.dp),
             label = {
@@ -121,7 +123,8 @@ fun SignUpScreen(navController: NavController) {
             },
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = YellowWhite,
-                cursorColor = MaterialTheme.colorScheme.secondary
+                cursorColor = MaterialTheme.colorScheme.secondary,
+                textColor = Color.Black
             ),
             label = {
                 Text(text = stringResource(R.string.password))
@@ -150,7 +153,8 @@ fun SignUpScreen(navController: NavController) {
             shape = RoundedCornerShape(7.dp),
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = YellowWhite,
-                cursorColor = MaterialTheme.colorScheme.secondary
+                cursorColor = MaterialTheme.colorScheme.secondary,
+                textColor = Color.Black
             ),
             label = {
                 Text(text = stringResource(R.string.confirm_password))

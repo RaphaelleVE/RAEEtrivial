@@ -47,7 +47,7 @@ class SignupViewModel @Inject constructor(
     }
 
     fun registerUserinFirebase(uid: String, email: String) {
-        firebaseRepository.insertUser(uid, UserFirebase(email, 0, mutableListOf()))
+        firebaseRepository.insertUser(uid, UserFirebase(email, 0, mutableListOf(),email))
     }
 
     fun confirmationPasswordCheck(
@@ -59,7 +59,6 @@ class SignupViewModel @Inject constructor(
         }
         return false
     }
-
     fun resetIsTryRegister() {
         _tryRegisterFlow.update { false }
     }
