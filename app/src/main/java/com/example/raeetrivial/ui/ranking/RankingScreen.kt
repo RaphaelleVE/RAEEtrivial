@@ -1,7 +1,5 @@
 package com.example.raeetrivial.ui.ranking
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
@@ -15,16 +13,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.example.raeetrivial.R
-import com.example.raeetrivial.ui.questions.QuestionsViewModel
-import com.example.raeetrivial.ui.theme.MainDarkBleue
 import com.example.raeetrivial.ui.theme.YellowWhite
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RankingScreen(navController: NavController) {
+fun RankingScreen() {
 
     val rankingViewModel = hiltViewModel<RankingViewModel>()
     val userlist = rankingViewModel.rankingFlow.collectAsState().value.sortedBy { it.score }
