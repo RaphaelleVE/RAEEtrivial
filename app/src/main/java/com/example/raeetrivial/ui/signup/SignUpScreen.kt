@@ -50,10 +50,11 @@ fun SignUpScreen(navController: NavController) {
     var confirmationPassword by remember { mutableStateOf("") }
     val context = LocalContext.current
     val isTryRegister = viewModel.tryRegisterFlow.collectAsState().value
+    val isSuccesRegister = viewModel.succesRegisterFlow.collectAsState().value
 
     LaunchedEffect(isTryRegister){
         if(isTryRegister) {
-            if (viewModel.succesRegisterFlow.value) {
+            if (isSuccesRegister) {
                 navController.navigate(Route.BASE)
             } else {
                 Toast.makeText(context, "Inscription échouée", Toast.LENGTH_SHORT).show()

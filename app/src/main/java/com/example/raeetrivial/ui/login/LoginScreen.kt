@@ -1,10 +1,8 @@
 package com.example.raeetrivial.ui.login
 
 import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,15 +16,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItemDefaults.contentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -41,9 +36,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.raeetrivial.R
 import com.example.raeetrivial.ui.Route
-import com.example.raeetrivial.repository.AuthRepository
-import com.example.raeetrivial.ui.signup.SignupViewModel
-import com.example.raeetrivial.ui.theme.RAEETRIVIALTheme
 import com.example.raeetrivial.ui.theme.YellowWhite
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,16 +46,20 @@ fun LoginScreen(navController: NavController) {
     val context = LocalContext.current
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val isConnected = viewModel.loginFlow.collectAsState().value;
+    val isConnected = viewModel.isConnectedFlow.collectAsState().value
+    val isTryConnection = viewModel.isTryConnectionFlow.collectAsState().value
 
-    LaunchedEffect(key1 = isConnected,  block = {
-        if (viewModel.loginFlow.value == true) {
-            Toast.makeText(context, "Connexion réussie", Toast.LENGTH_SHORT).show()
-            navController.navigate(Route.BASE)
-        } else {
-            Toast.makeText(context, "Connexion échouée", Toast.LENGTH_SHORT).show()
+    LaunchedEffect(isTryConnection){
+        if(isTryConnection){
+            if (isConnected) {
+                Toast.makeText(context, "Connexion réussie", Toast.LENGTH_SHORT).show()
+                navController.navigate(Route.BASE)
+            } else {
+                Toast.makeText(context, "Connexion échouée", Toast.LENGTH_SHORT).show()
+            }
+            viewModel.resetIsTryConnection()
         }
-    })
+    }
 
     Column(
         modifier = Modifier
