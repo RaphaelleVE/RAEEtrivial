@@ -19,27 +19,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.raeetrivial.R
-import com.example.raeetrivial.domain.UserFirebase
 import com.example.raeetrivial.ui.theme.MainDarkBleue
 import com.example.raeetrivial.ui.theme.Pink80
 import com.example.raeetrivial.ui.theme.YellowWhite
-import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QuestionsScreen(globalUser : StateFlow<UserFirebase?>) {
+fun QuestionsScreen() {
     val viewModel = hiltViewModel<QuestionsViewModel>()
-    val questionsUiState = viewModel.questionsUiState.collectAsState().value
-
-    val context = LocalContext.current
-    val currentUser = globalUser.collectAsState().value
+    val currentQuestion = viewModel.currentQuestion.collectAsState().value
+    val answered = viewModel.answered.collectAsState().value
 
     var selectedIndex by remember { mutableStateOf(-1) }
 
@@ -48,7 +43,7 @@ fun QuestionsScreen(globalUser : StateFlow<UserFirebase?>) {
             .fillMaxSize()
             .padding(dimensionResource(id = R.dimen.loginPadding))
     ) {
-        if (questionsUiState != null) {
+        if (currentQuestion != null && answered != null) {
             Card(
                 Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
@@ -67,7 +62,7 @@ fun QuestionsScreen(globalUser : StateFlow<UserFirebase?>) {
                         modifier = Modifier.padding(20.dp),
                         fontSize = (17.sp),
                         style = MaterialTheme.typography.titleMedium,
-                        text = questionsUiState.currentQuestion
+                        text = currentQuestion.question
                     )
                 })
             Spacer(
@@ -75,14 +70,14 @@ fun QuestionsScreen(globalUser : StateFlow<UserFirebase?>) {
                     .fillMaxWidth()
                     .padding(dimensionResource(id = R.dimen.miniSpacer))
             )
-            questionsUiState.answers.forEachIndexed { index, it ->
+            currentQuestion.answers.forEachIndexed { index, it ->
                 Button(modifier = Modifier
                     .fillMaxWidth()
                     .padding(15.dp)
                     .height(dimensionResource(id = R.dimen.answerButtonHeight)),
                     shape = RoundedCornerShape(7.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (questionsUiState.answered && selectedIndex == index) {
+                        containerColor = if (answered && selectedIndex == index) {
                             if (it.isCorrect){
                                 Color.Green
                             } else {

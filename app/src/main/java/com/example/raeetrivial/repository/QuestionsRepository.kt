@@ -20,7 +20,7 @@ class QuestionsRepository @Inject constructor (
     private val userRepository : UserFirebaseRepository
 
 ){
-        suspend fun getQuestionsOfTheDay(): QuestionsOfTheDay? {
+        suspend fun getQuestionsOfTheDay(): QuestionsOfTheDay {
 
             var questionsOfTheDay = firestore.collection(_collection).document(getQuestionsId()).snapshots().first().toObject<QuestionsOfTheDay>()
 
@@ -65,7 +65,7 @@ class QuestionsRepository @Inject constructor (
     }
 
 
-    private fun getQuestionsId(): String {
+    fun getQuestionsId(): String {
         val currentDate = LocalDate.now()
         return currentDate.toString()
     }

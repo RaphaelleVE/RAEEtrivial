@@ -9,6 +9,7 @@ import com.google.firebase.firestore.ktx.toObjects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import java.time.LocalDate
 import javax.inject.Inject
 
 class UserFirebaseRepository @Inject constructor(private val authRepository : AuthRepository , private val firestore: FirebaseFirestore) {
@@ -30,7 +31,7 @@ class UserFirebaseRepository @Inject constructor(private val authRepository : Au
 
         val uid = authRepository.currentUser?.uid
         if(uid != null){
-            var user = firestore.collection(_collection).document(uid).snapshots().first().toObject<UserFirebase?>()
+            val user = firestore.collection(_collection).document(uid).snapshots().first().toObject<UserFirebase?>()
             if(user != null){
 
                 return user
@@ -40,15 +41,7 @@ class UserFirebaseRepository @Inject constructor(private val authRepository : Au
 
 
     }
-
-    suspend fun increaseCurrentUserScore(score: Int) {
-        val user = getCurrentUser()
-        if(user != null){
-            user.score += score
-            updateCurrentUser(user)
-        }
-    }
-    fun updateCurrentUser(user: UserFirebase) : Boolean{
+    fun updateCurrentUser(user: UserFirebase){
         val uid = authRepository.currentUser?.uid
         if(uid != null){
             firestore.collection(_collection).document(uid).set(user)
@@ -69,6 +62,28 @@ class UserFirebaseRepository @Inject constructor(private val authRepository : Au
             }
         }
 
+    }
+
+    fun getCurrentQuestionOfTheDay(user: UserFirebase?) : Int? {
+        if (user != null) {
+            return user.currentQuestionOfTheDays.find{ currentQuestionOfTheDay -> currentQuestionOfTheDay.date == getQuestionsId()}?.currentQuestion
+
+        }
+        return null
+    }
+    fun incrementCurrentQuestionOfTheDay(user: UserFirebase?) {
+        if (user != null) {
+            val currentQuestionOfTheDay = user.currentQuestionOfTheDays.find{ currentQuestionOfTheDay -> currentQuestionOfTheDay.date == getQuestionsId()}
+            if( currentQuestionOfTheDay != null){
+                currentQuestionOfTheDay.currentQuestion ++
+            }
+            updateCurrentUser(user)
+        }
+    }
+
+    fun getQuestionsId(): String {
+        val currentDate = LocalDate.now()
+        return currentDate.toString()
     }
 
     //companion object gère les constantes, équivalent du static
