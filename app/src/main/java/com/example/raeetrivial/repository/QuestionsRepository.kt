@@ -16,7 +16,8 @@ import javax.inject.Inject
 
 class QuestionsRepository @Inject constructor (
     private val firestore: FirebaseFirestore,
-    private val api: QuestionsOfTheDayApi
+    private val api: QuestionsOfTheDayApi,
+    private val userRepository : UserFirebaseRepository
 
 ){
         suspend fun getQuestionsOfTheDay(): QuestionsOfTheDay? {
@@ -32,7 +33,7 @@ class QuestionsRepository @Inject constructor (
                 insertQuestionsOfTheDay(QuestionsOfTheDay(questions))
                 questionsOfTheDay = QuestionsOfTheDay((questions))
             }
-
+            userRepository.createCurrentQuestionOfTheDay(getQuestionsId())
             return questionsOfTheDay
         }
 

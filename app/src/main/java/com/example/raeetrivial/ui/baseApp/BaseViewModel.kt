@@ -22,7 +22,7 @@ class BaseViewModel @Inject constructor(
     //MutableStateFlow : l'ui ne vient pas modifier la data du viewModel. On a donc besoin
     //d'une variable dont on peut changer la valeur
     //c'est un bus auquel la viewModel est abonnée
-    private val _baseUserFlow = MutableStateFlow<UserFirebase>(UserFirebase("test",0,0))
+    private val _baseUserFlow = MutableStateFlow<UserFirebase>(UserFirebase("",0, mutableListOf()))
     val baseUserFlow: StateFlow<UserFirebase> = _baseUserFlow
 
     fun logout(){

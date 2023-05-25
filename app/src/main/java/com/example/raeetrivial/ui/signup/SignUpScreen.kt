@@ -16,7 +16,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -49,6 +48,7 @@ fun SignUpScreen(navController: NavController) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var confirmationPassword by remember { mutableStateOf("") }
     val context = LocalContext.current
     var isTriedRegister = viewModel.tryRegisterFlow.collectAsState().value
 
@@ -145,9 +145,9 @@ fun SignUpScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(dimensionResource(id = R.dimen.editTextHeight)),
-            value = password,
+            value = confirmationPassword,
             onValueChange = {
-                password = it
+                confirmationPassword = it
             },
             shape = RoundedCornerShape(7.dp),
             colors = TextFieldDefaults.textFieldColors(
@@ -181,7 +181,11 @@ fun SignUpScreen(navController: NavController) {
                 contentColor = YellowWhite
             ),
             onClick = {
-                viewModel.signupUser(email, password)
+                if (viewModel.confirmationPasswordCheck(password, confirmationPassword)) {
+                    viewModel.signupUser(email, password)
+                } else {
+                    Toast.makeText(context, "Not the same passwords ! ", Toast.LENGTH_SHORT).show()
+                }
             }
         ) {
             Text(
