@@ -79,7 +79,6 @@ fun LoginScreen(navController: NavController) {
                 .fillMaxWidth()
                 .size(200.dp),
             contentScale = ContentScale.Fit,
-
             )
         Spacer(
             modifier = Modifier

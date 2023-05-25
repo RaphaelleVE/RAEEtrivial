@@ -48,11 +48,13 @@ class UserFirebaseRepository @Inject constructor(private val authRepository : Au
             updateCurrentUser(user)
         }
     }
-    fun updateCurrentUser(user: UserFirebase){
+    fun updateCurrentUser(user: UserFirebase) : Boolean{
         val uid = authRepository.currentUser?.uid
         if(uid != null){
             firestore.collection(_collection).document(uid).set(user)
+            return true
         }
+        return false
     }
 
     suspend fun createCurrentQuestionOfTheDay(questionsId: String) {
