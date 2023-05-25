@@ -41,7 +41,7 @@ class UserFirebaseRepository @Inject constructor(private val authRepository : Au
 
 
     }
-    fun updateCurrentUser(user: UserFirebase){
+    fun updateCurrentUser(user: UserFirebase) : Boolean {
         val uid = authRepository.currentUser?.uid
         if(uid != null){
             firestore.collection(_collection).document(uid).set(user)
