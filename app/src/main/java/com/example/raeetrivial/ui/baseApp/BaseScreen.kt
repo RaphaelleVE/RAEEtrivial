@@ -1,6 +1,7 @@
 package com.example.raeetrivial.ui.baseApp
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -8,6 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -40,6 +44,7 @@ fun BaseScreen(navController: NavController) {
                              Icon(
                                  painterResource(id = R.drawable.ic_logout),
                                  contentDescription = stringResource(R.string.logout))
+                             Text(text = "Log out", fontSize = (11.sp), fontWeight = FontWeight.Bold, modifier = Modifier.offset(0.dp, 20.dp))
                          }
                      },
 
@@ -58,7 +63,8 @@ fun BaseScreen(navController: NavController) {
                         )
                     },
                     label = { Text(color = Color.Black,
-                        text = stringResource(R.string.ranking)) },
+                        text = stringResource(R.string.ranking),
+                        modifier = Modifier.offset(0.dp, 10.dp)) },
                     alwaysShowLabel = true,
                     selected = false,
                     onClick = {
@@ -73,7 +79,9 @@ fun BaseScreen(navController: NavController) {
                             contentDescription = stringResource(R.string.game)
                         )
                     },
-                    label = { Text(color = Color.Black,text = stringResource(R.string.game)) },
+                    label = { Text(color = Color.Black,
+                        text = stringResource(R.string.game),
+                        modifier = Modifier.offset(0.dp, 10.dp)) },
                     alwaysShowLabel = true,
                     selected = false,
                     onClick = {
@@ -88,7 +96,9 @@ fun BaseScreen(navController: NavController) {
                             contentDescription = stringResource(R.string.profile)
                         )
                     },
-                    label = { Text(color = Color.Black,text = stringResource(R.string.profile)) },
+                    label = { Text(color = Color.Black,
+                        text = stringResource(R.string.profile),
+                        modifier = Modifier.offset(0.dp, 10.dp)) },
                     alwaysShowLabel = true,
                     selected = false,
                     onClick = {
