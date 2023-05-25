@@ -52,6 +52,7 @@ fun ProfileScreen() {
                 }
                 Text(text = currentUser.email, textAlign = TextAlign.Left,
                     fontSize = 25.sp,
+                    color = Color.Black,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp))
@@ -64,8 +65,10 @@ fun ProfileScreen() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
-                Text(text = "Score : " + currentUser.score, textAlign = TextAlign.Left, fontSize = 30.sp)
+                Text(text = "Score : " + currentUser.score,
+                    textAlign = TextAlign.Left,
+                    fontSize = 30.sp,
+                    color = Color.Black,)
             }
         }
     }

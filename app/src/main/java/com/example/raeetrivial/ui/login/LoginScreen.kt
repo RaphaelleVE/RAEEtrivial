@@ -96,10 +96,11 @@ fun LoginScreen(navController: NavController) {
             },
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = YellowWhite,
-                cursorColor = MaterialTheme.colorScheme.secondary
+                cursorColor = MaterialTheme.colorScheme.secondary,
+                textColor = Color.Black
             ),
             label = {
-                Text(text = stringResource(R.string.email))
+                Text(text = stringResource(R.string.email) )
             },
             shape = RoundedCornerShape(7.dp),
             keyboardOptions = KeyboardOptions(
@@ -124,7 +125,8 @@ fun LoginScreen(navController: NavController) {
             },
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = YellowWhite,
-                cursorColor = MaterialTheme.colorScheme.secondary
+                cursorColor = MaterialTheme.colorScheme.secondary,
+                textColor = Color.Black
             ),
             label = {
                 Text(text = stringResource(R.string.password))

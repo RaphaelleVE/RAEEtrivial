@@ -27,7 +27,7 @@ import com.example.raeetrivial.ui.theme.YellowWhite
 fun RankingScreen(navController: NavController) {
 
     val rankingViewModel = hiltViewModel<RankingViewModel>()
-    val userlist = rankingViewModel.rankingFlow.collectAsState().value.sortedBy { it.score }
+    val userlist = rankingViewModel.rankingFlow.collectAsState().value.sortedByDescending { it.score }
 
     Card (
         Modifier.fillMaxSize()
