@@ -60,7 +60,7 @@ fun RankingScreen() {
                                     .padding(dimensionResource(id = R.dimen.miniSpacer)),
                                 fontSize = (20.sp),
                                 textAlign = TextAlign.Center,
-                                text = userlist[index].email
+                                text = userlist[index].pseudo
                             )
                             Text(
                                 modifier = Modifier

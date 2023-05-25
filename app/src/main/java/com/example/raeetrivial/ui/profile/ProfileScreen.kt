@@ -46,12 +46,15 @@ fun ProfileScreen() {
     val currentUser = viewModel.currentUser.collectAsState().value
 
     var isEditingPseudo by remember { mutableStateOf(false) }
-    val getEmail = viewModel.currentUser.collectAsState().value.email
-    var newPseudo by remember { mutableStateOf(getEmail) }
+    val getCurrentPseudo = viewModel.currentUser.collectAsState().value.pseudo
+    var newPseudo by remember { mutableStateOf(getCurrentPseudo) }
+    var triedChange by remember { mutableStateOf(false) }
     val tempoPseudo = viewModel.tempoPseudo.collectAsState().value
 
     LaunchedEffect(key1 = tempoPseudo){
-        isEditingPseudo = !isEditingPseudo
+        if(triedChange) {
+            isEditingPseudo = !isEditingPseudo
+        }
     }
     
     
@@ -75,7 +78,7 @@ fun ProfileScreen() {
             Row( modifier = Modifier.fillMaxWidth(),Arrangement.SpaceAround) {
                 if(!isEditingPseudo) {
                     Text(
-                        text = currentUser.email,
+                        text = currentUser.pseudo,
                         textAlign = TextAlign.Center,
                         fontSize = 20.sp,
                         color = YellowWhite,
@@ -106,11 +109,12 @@ fun ProfileScreen() {
                      )
                 }
                 IconButton(onClick = { // todo changer condition si marche po (!)
-                                        if(!isEditingPseudo){
-                                            newPseudo = getEmail
-                                            isEditingPseudo = true
-                                        }else{
+                                        if(isEditingPseudo){
                                             viewModel.changeUserPseudo(newPseudo)
+                                            triedChange=true
+                                        }else{
+                                            newPseudo = getCurrentPseudo
+                                            isEditingPseudo = true
                                         }
                                      },
                     modifier = Modifier
@@ -122,6 +126,14 @@ fun ProfileScreen() {
                         tint = YellowWhite)
                 }
             }
+            Text(
+                text = currentUser.email,
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp,
+                color = YellowWhite,
+                modifier = Modifier
+                    .padding(20.dp)
+            )
             }
         }
 
