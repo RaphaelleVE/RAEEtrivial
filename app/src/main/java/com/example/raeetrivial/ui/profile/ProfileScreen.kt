@@ -1,6 +1,5 @@
 package com.example.raeetrivial.ui.profile
 
-import android.widget.EditText
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,10 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -75,6 +72,12 @@ fun ProfileScreen() {
                             .fillMaxSize()
                             .clip(CircleShape))
                 }
+            Text(
+                text = "Pseudo",
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp,
+                color = YellowWhite,
+            )
             Row( modifier = Modifier.fillMaxWidth(),Arrangement.SpaceAround) {
                 if(!isEditingPseudo) {
                     Text(
@@ -82,14 +85,11 @@ fun ProfileScreen() {
                         textAlign = TextAlign.Center,
                         fontSize = 20.sp,
                         color = YellowWhite,
-                        modifier = Modifier
-                            .padding(20.dp)
                     )
 
                 }else{
                     TextField(
                         modifier = Modifier
-                            .padding(20.dp)
                             .width(200.dp),
                         value = newPseudo,
                         onValueChange = {
@@ -118,8 +118,7 @@ fun ProfileScreen() {
                                         }
                                      },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp)) {
+                        .fillMaxWidth()) {
                     Icon(painter = if(!isEditingPseudo) painterResource(id = R.drawable.ic_edit_48px)
                         else painterResource(id = R.drawable.ic_check_circle_48px),
                         contentDescription = "EDIT PSEUDO",
@@ -127,12 +126,16 @@ fun ProfileScreen() {
                 }
             }
             Text(
+                text = "Email",
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp,
+                color = YellowWhite,
+            )
+            Text(
                 text = currentUser.email,
                 textAlign = TextAlign.Center,
                 fontSize = 20.sp,
                 color = YellowWhite,
-                modifier = Modifier
-                    .padding(20.dp)
             )
             }
         }
