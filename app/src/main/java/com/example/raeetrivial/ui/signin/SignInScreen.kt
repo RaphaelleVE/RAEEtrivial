@@ -1,4 +1,4 @@
-package com.example.raeetrivial.ui.login
+package com.example.raeetrivial.ui.signin
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -41,9 +41,9 @@ import com.example.raeetrivial.ui.theme.YellowWhite
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavController) {
+fun SignInScreen(navController: NavController) {
 
-    val viewModel = hiltViewModel<LoginViewModel>()
+    val viewModel = hiltViewModel<SignInViewModel>()
     val context = LocalContext.current
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -140,17 +140,17 @@ fun LoginScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(dimensionResource(id = R.dimen.blockSpacer))
         )
-        Button(modifier = Modifier
-            .fillMaxWidth()
-            .height(dimensionResource(id = R.dimen.bigButtonHeight)),
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(dimensionResource(id = R.dimen.bigButtonHeight)),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
                 contentColor = YellowWhite
             ),
             shape = RoundedCornerShape(7.dp),
             onClick = {
-                viewModel.loginUser(email, password)
-                //TODO LOGIN
+                viewModel.signInUser(email, password)
             }
         ) {
             Text(
@@ -173,7 +173,7 @@ fun LoginScreen(navController: NavController) {
             ),
             shape = RoundedCornerShape(7.dp),
             onClick = {
-                navController.navigate(Route.SIGNUP)
+                navController.navigate(Route.SIGN_UP)
             }
         ) {
             Text(
@@ -183,5 +183,4 @@ fun LoginScreen(navController: NavController) {
             )
         }
     }
-
 }

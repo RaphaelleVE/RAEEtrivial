@@ -209,7 +209,7 @@ fun SignUpScreen(navController: NavController) {
             ),
             shape = RoundedCornerShape(7.dp),
             onClick = {
-                navController.navigate(Route.LOGIN)
+                navController.navigate(Route.SIGN_IN)
             }
         ) {
             Text(

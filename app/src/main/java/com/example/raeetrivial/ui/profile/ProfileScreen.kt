@@ -40,13 +40,13 @@ import com.example.raeetrivial.ui.theme.YellowWhite
 fun ProfileScreen() {
 
     val viewModel = hiltViewModel<ProfileViewModel>()
-    val currentUser = viewModel.currentUser.collectAsState().value
+    val currentUser = viewModel.currentUserFlow.collectAsState().value
 
     var isEditingPseudo by remember { mutableStateOf(false) }
-    val getCurrentPseudo = viewModel.currentUser.collectAsState().value.pseudo
+    val getCurrentPseudo = viewModel.currentUserFlow.collectAsState().value.pseudo
     var newPseudo by remember { mutableStateOf(getCurrentPseudo) }
     var triedChange by remember { mutableStateOf(false) }
-    val tempoPseudo = viewModel.tempoPseudo.collectAsState().value
+    val tempoPseudo = viewModel.tempoPseudoFlow.collectAsState().value
 
     LaunchedEffect(key1 = tempoPseudo){
         if(triedChange) {
@@ -58,20 +58,21 @@ fun ProfileScreen() {
     Column() {
     if(currentUser.email != ""){
         Column(modifier = Modifier.padding(10.dp)) {
-                Box(
+            Box(
+                modifier = Modifier
+                    .size(200.dp)
+                    .clip(CircleShape)
+                    .background(Color.Cyan)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.pfp_raee),
+                    contentDescription = "profile pic",
                     modifier = Modifier
-                        .size(200.dp)
-                        .clip(CircleShape)
-                        .background(Color.Cyan)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(painter = painterResource(R.drawable.pfp_raee),
-                        contentDescription = "profile pic",
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(CircleShape))
-                }
+                        .fillMaxSize()
+                        .clip(CircleShape))
+            }
             Text(
                 text = "Pseudo",
                 textAlign = TextAlign.Center,
@@ -106,24 +107,27 @@ fun ProfileScreen() {
                             autoCorrect = false,
                             imeAction = ImeAction.Next
                         )
-                     )
+                    )
                 }
-                IconButton(onClick = { // todo changer condition si marche po (!)
-                                        if(isEditingPseudo){
-                                            viewModel.changeUserPseudo(newPseudo)
-                                            triedChange=true
-                                        }else{
-                                            newPseudo = getCurrentPseudo
-                                            isEditingPseudo = true
-                                        }
-                                     },
+                IconButton(
+                    onClick = {
+                            if(isEditingPseudo){
+                                viewModel.changeUserPseudo(newPseudo)
+                                triedChange=true
+                            }else {
+                                newPseudo = getCurrentPseudo
+                                isEditingPseudo = true
+                            }
+                        },
                     modifier = Modifier
                         .fillMaxWidth()) {
-                    Icon(painter = if(!isEditingPseudo) painterResource(id = R.drawable.ic_edit_48px)
-                        else painterResource(id = R.drawable.ic_check_circle_48px),
-                        contentDescription = "EDIT PSEUDO",
-                        tint = YellowWhite)
-                }
+                            Icon(
+                            painter =
+                                if(!isEditingPseudo) painterResource(id = R.drawable.ic_edit_48px)
+                                else painterResource(id = R.drawable.ic_check_circle_48px),
+                            contentDescription = "EDIT PSEUDO",
+                            tint = YellowWhite)
+                        }
             }
             Text(
                 text = "Email",
@@ -137,22 +141,20 @@ fun ProfileScreen() {
                 fontSize = 20.sp,
                 color = YellowWhite,
             )
-            }
         }
-
+    }
         Column(modifier = Modifier.padding(10.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Score : " + currentUser?.score,
+                Text(text = "Score : " + currentUser.score,
                     textAlign = TextAlign.Left,
                     fontSize = 30.sp,
                     color = YellowWhite)
             }
         }
     }
-
 }
 

@@ -9,9 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -33,22 +31,22 @@ fun BaseScreen(navController: NavController) {
     val navBarController = rememberNavController()
     Scaffold (
         topBar = {
-                 CenterAlignedTopAppBar(
-                     title = {Text(text = "Trivial Pursuit")},
-                     colors= TopAppBarDefaults.smallTopAppBarColors(containerColor = YellowWhite),
-                     actions = {
-                         IconButton(onClick = {
-                             viewModel.logout()
-                             navController.navigate(Route.SIGNUP)
-                         }) {
-                             Icon(
-                                 painterResource(id = R.drawable.ic_logout),
-                                 contentDescription = stringResource(R.string.logout))
-                             Text(text = "Log out", fontSize = (11.sp), fontWeight = FontWeight.Bold, modifier = Modifier.offset(0.dp, 20.dp))
-                         }
-                     },
-
-                 )
+            CenterAlignedTopAppBar(
+                title = {Text(text = "Trivial Pursuit")},
+                colors= TopAppBarDefaults.smallTopAppBarColors(containerColor = YellowWhite),
+                actions =
+                {
+                    IconButton(onClick = {
+                        viewModel.signOut()
+                        navController.navigate(Route.SIGN_UP)
+                    }) {
+                        Icon(
+                            painterResource(id = R.drawable.ic_logout),
+                            contentDescription = stringResource(R.string.logout)
+                        )
+                    }
+                },
+            )
         },
         containerColor = MaterialTheme.colorScheme.primary,
         bottomBar = {
@@ -62,9 +60,12 @@ fun BaseScreen(navController: NavController) {
                             contentDescription = stringResource(R.string.ranking)
                         )
                     },
-                    label = { Text(color = Color.Black,
-                        text = stringResource(R.string.ranking),
-                        modifier = Modifier.offset(0.dp, 10.dp)) },
+                    label = {
+                        Text(
+                            color = Color.Black,
+                            text = stringResource(R.string.ranking),
+                            modifier = Modifier.offset(0.dp, 10.dp))
+                    },
                     alwaysShowLabel = true,
                     selected = false,
                     onClick = {
@@ -79,9 +80,12 @@ fun BaseScreen(navController: NavController) {
                             contentDescription = stringResource(R.string.game)
                         )
                     },
-                    label = { Text(color = Color.Black,
-                        text = stringResource(R.string.game),
-                        modifier = Modifier.offset(0.dp, 10.dp)) },
+                    label = {
+                        Text(
+                            color = Color.Black,
+                            text = stringResource(R.string.game),
+                            modifier = Modifier.offset(0.dp, 10.dp))
+                    },
                     alwaysShowLabel = true,
                     selected = false,
                     onClick = {
@@ -96,9 +100,12 @@ fun BaseScreen(navController: NavController) {
                             contentDescription = stringResource(R.string.profile)
                         )
                     },
-                    label = { Text(color = Color.Black,
-                        text = stringResource(R.string.profile),
-                        modifier = Modifier.offset(0.dp, 10.dp)) },
+                    label = {
+                        Text(
+                            color = Color.Black,
+                            text = stringResource(R.string.profile),
+                            modifier = Modifier.offset(0.dp, 10.dp))
+                    },
                     alwaysShowLabel = true,
                     selected = false,
                     onClick = {
@@ -108,7 +115,6 @@ fun BaseScreen(navController: NavController) {
             }
         }
     ) { innerPadding ->
-        // Apply the padding globally to the whole BottomNavScreensController
         Box(modifier = Modifier.padding(innerPadding)) {
             NavHost(
                 navController = navBarController,

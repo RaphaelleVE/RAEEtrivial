@@ -19,5 +19,3 @@ object FirebaseModule {
     @Provides
     fun provideFirebaseFirestore(): FirebaseFirestore = Firebase.firestore
 }
-//:FirebaseAuth permet le typage
-// = FirebaseAuth.getInstance() <=> {return FirebaseAuth.getInstance()}

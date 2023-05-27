@@ -1,14 +1,11 @@
 package com.example.raeetrivial.ui.profile
 
-import android.util.Log
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.raeetrivial.domain.UserFirebase
-import com.example.raeetrivial.repository.UserFirebaseRepository
+import com.example.raeetrivial.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -17,21 +14,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val firebaseRepository: UserFirebaseRepository
+    private val userRepository: UserRepository
 ): ViewModel(){
 
-    private val _currentUser = MutableStateFlow<UserFirebase>(UserFirebase())
-    val currentUser : StateFlow<UserFirebase> = _currentUser
+    private val _currentUserFlow = MutableStateFlow<UserFirebase>(UserFirebase())
+    val currentUserFlow : StateFlow<UserFirebase> = _currentUserFlow
 
-    private val _tempoPseudo = MutableStateFlow<String>("")
-    val tempoPseudo : StateFlow<String> = _tempoPseudo
-
+    private val _tempoPseudoFlow = MutableStateFlow<String>("")
+    val tempoPseudoFlow : StateFlow<String> = _tempoPseudoFlow
 
     init{
         viewModelScope.launch(Dispatchers.IO) {
-            val currentUser = firebaseRepository.getCurrentUser()
+            val currentUser = userRepository.getCurrentUser()
             if(currentUser != null){
-                _currentUser.update { if(firebaseRepository.getCurrentUser() != null) firebaseRepository.getCurrentUser()!! else UserFirebase() }
+                _currentUserFlow.update {
+                    if(userRepository.getCurrentUser() != null) userRepository.getCurrentUser()!!
+                    else UserFirebase()
+                }
             }
         }
     }
@@ -39,12 +38,11 @@ class ProfileViewModel @Inject constructor(
     fun changeUserPseudo(pseudo : String){
         viewModelScope.launch(Dispatchers.IO) {
             if(pseudo.isNotEmpty()){
-                _currentUser.value.pseudo = pseudo
-               if(firebaseRepository.updateCurrentUser(currentUser.value)) {
-                   _tempoPseudo.update { pseudo }
+                _currentUserFlow.value.pseudo = pseudo
+               if(userRepository.updateCurrentUser(currentUserFlow.value)) {
+                   _tempoPseudoFlow.update { pseudo }
                }
             }
         }
-
     }
 }

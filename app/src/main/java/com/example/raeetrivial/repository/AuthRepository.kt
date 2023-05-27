@@ -10,7 +10,7 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth)
     val currentUser: FirebaseUser?
         get() = firebaseAuth.currentUser
 
-    suspend fun login(email: String, password: String): FirebaseUser?{
+    suspend fun signIn(email: String, password: String): FirebaseUser?{
         return try{
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
             result.user
@@ -20,7 +20,7 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth)
         }
     }
 
-    suspend fun signup(email: String, password: String): FirebaseUser? {
+    suspend fun registerUser(email: String, password: String): FirebaseUser? {
         return try {
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             result.user
@@ -30,7 +30,7 @@ class AuthRepository @Inject constructor(private val firebaseAuth: FirebaseAuth)
         }
     }
 
-    fun logout(){
+    fun signOut(){
         firebaseAuth.signOut()
     }
 }
