@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.raeetrivial.domain.Answer
 import com.example.raeetrivial.domain.Question
 import com.example.raeetrivial.domain.QuestionsOfTheDay
-import com.example.raeetrivial.domain.UserFirebase
+import com.example.raeetrivial.domain.User
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import com.example.raeetrivial.repository.QuestionsRepository
@@ -22,8 +22,8 @@ class QuestionsViewModel @Inject constructor(
     private val userRepository: UserRepository
     ): ViewModel(){
 
-    private val _currentUserFlow = MutableStateFlow<UserFirebase?>(null)
-    private val currentUserFlow : StateFlow<UserFirebase?>
+    private val _currentUserFlow = MutableStateFlow<User?>(null)
+    private val currentUserFlow : StateFlow<User?>
         get() = _currentUserFlow
 
     private val _questionsOfTheDayFlow = MutableStateFlow<QuestionsOfTheDay>(QuestionsOfTheDay())

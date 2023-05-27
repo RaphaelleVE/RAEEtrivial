@@ -1,7 +1,7 @@
 package com.example.raeetrivial.repository
 
 import com.example.raeetrivial.domain.CurrentQuestionOfTheDay
-import com.example.raeetrivial.domain.UserFirebase
+import com.example.raeetrivial.domain.User
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.snapshots
@@ -19,23 +19,23 @@ class UserRepository @Inject constructor(
     ) {
 
     //insert user in Firestore
-    private fun insertUser(id: String, user: UserFirebase) {
+    private fun insertUser(id: String, user: User) {
         store.collection(_collection).document(id).set(user)
     }
 
-    fun getAll(): Flow<List<UserFirebase>> {
+    fun getAll(): Flow<List<User>> {
         return store.collection(_collection).snapshots().map {
-            it.toObjects<UserFirebase>()
+            it.toObjects<User>()
         }
     }
 
-    suspend fun getCurrentUser(): UserFirebase? {
+    suspend fun getCurrentUser(): User? {
         val uid = authRepository.currentUser?.uid
         if(uid != null){
             val user = store
                 .collection(_collection)
                 .document(uid)
-                .snapshots().first().toObject<UserFirebase?>()
+                .snapshots().first().toObject<User?>()
             if(user != null){
 
                 return user
@@ -44,7 +44,7 @@ class UserRepository @Inject constructor(
         return null
     }
 
-    fun updateCurrentUser(user: UserFirebase) : Boolean {
+    fun updateCurrentUser(user: User) : Boolean {
         val uid = authRepository.currentUser?.uid
         if(uid != null){
             store.collection(_collection).document(uid).set(user)
@@ -69,7 +69,7 @@ class UserRepository @Inject constructor(
     }
 
     //fetch current question for the user in firestore
-    fun getCurrentQuestionOfTheDay(user: UserFirebase?) : Int? {
+    fun getCurrentQuestionOfTheDay(user: User?) : Int? {
         if (user != null) {
             return user.currentQuestionOfTheDays.find{
                     currentQuestionOfTheDay ->
@@ -79,7 +79,7 @@ class UserRepository @Inject constructor(
     }
 
     //increment user's current question
-    fun incrementCurrentQuestionOfTheDay(user: UserFirebase?) {
+    fun incrementCurrentQuestionOfTheDay(user: User?) {
         if (user != null) {
             val currentQuestionOfTheDay = user.currentQuestionOfTheDays.find{
                     currentQuestionOfTheDay ->
@@ -100,7 +100,7 @@ class UserRepository @Inject constructor(
     suspend fun registerUser(email: String, password: String): FirebaseUser? {
         val user = authRepository.registerUser(email,password)
         if(user != null){
-            insertUser(user.uid, UserFirebase(email, 0, mutableListOf(),email))
+            insertUser(user.uid, User(email, 0, mutableListOf(),email))
             return user
         }
         return null

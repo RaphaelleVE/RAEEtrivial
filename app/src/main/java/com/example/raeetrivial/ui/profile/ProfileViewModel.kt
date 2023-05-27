@@ -2,7 +2,7 @@ package com.example.raeetrivial.ui.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.raeetrivial.domain.UserFirebase
+import com.example.raeetrivial.domain.User
 import com.example.raeetrivial.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -17,8 +17,8 @@ class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository
 ): ViewModel(){
 
-    private val _currentUserFlow = MutableStateFlow<UserFirebase>(UserFirebase())
-    val currentUserFlow : StateFlow<UserFirebase> = _currentUserFlow
+    private val _currentUserFlow = MutableStateFlow<User>(User())
+    val currentUserFlow : StateFlow<User> = _currentUserFlow
 
     private val _tempoPseudoFlow = MutableStateFlow<String>("")
     val tempoPseudoFlow : StateFlow<String> = _tempoPseudoFlow
@@ -29,7 +29,7 @@ class ProfileViewModel @Inject constructor(
             if(currentUser != null){
                 _currentUserFlow.update {
                     if(userRepository.getCurrentUser() != null) userRepository.getCurrentUser()!!
-                    else UserFirebase()
+                    else User()
                 }
             }
         }
