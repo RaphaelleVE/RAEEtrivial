@@ -27,8 +27,8 @@ class SignInViewModel @Inject constructor(
 
     fun signInUser(email: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val isLogged = userRepository.signIn(email, password)
-            if (isLogged != null) {
+            val loggedUser = userRepository.signIn(email, password)
+            if (loggedUser != null) {
                 _isConnectedFlow.update{ true }
             }
             _isTryConnectionFlow.update{ true }
