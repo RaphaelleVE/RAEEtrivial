@@ -13,5 +13,4 @@ class ComposeApplication : Application() {
             Timber.plant(Timber.DebugTree())
         }
     }
-
 }

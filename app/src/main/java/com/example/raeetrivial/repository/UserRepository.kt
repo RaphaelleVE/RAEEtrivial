@@ -2,6 +2,7 @@ package com.example.raeetrivial.repository
 
 import com.example.raeetrivial.domain.CurrentQuestionOfTheDay
 import com.example.raeetrivial.domain.UserFirebase
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.firestore.ktx.toObject
@@ -12,13 +13,10 @@ import kotlinx.coroutines.flow.map
 import java.time.LocalDate
 import javax.inject.Inject
 
-class UserFirebaseRepository @Inject constructor(private val authRepository : AuthRepository , private val firestore: FirebaseFirestore) {
+class UserRepository @Inject constructor(private val authRepository : AuthRepository, private val firestore: FirebaseFirestore) {
 
-    fun insertUser(id: String, user: UserFirebase): Boolean {
-        //le paramètre passé à document détermine son id. On lui passe l'id de firestore),
-        // si le document existe il l'écrase, sinon il l'insère
-        //si le set user s'est bien passé, ça renvoie le booleen isSuccessiful
-             return firestore.collection(_collection).document(id).set(user).isSuccessful
+    private fun insertUser(id: String, user: UserFirebase) {
+        firestore.collection(_collection).document(id).set(user)
     }
 
     fun getAll(): Flow<List<UserFirebase>> {
@@ -61,13 +59,11 @@ class UserFirebaseRepository @Inject constructor(private val authRepository : Au
                 updateCurrentUser(user)
             }
         }
-
     }
 
     fun getCurrentQuestionOfTheDay(user: UserFirebase?) : Int? {
         if (user != null) {
             return user.currentQuestionOfTheDays.find{ currentQuestionOfTheDay -> currentQuestionOfTheDay.date == getQuestionsId()}?.currentQuestion
-
         }
         return null
     }
@@ -81,12 +77,28 @@ class UserFirebaseRepository @Inject constructor(private val authRepository : Au
         }
     }
 
-    fun getQuestionsId(): String {
+    private fun getQuestionsId(): String {
         val currentDate = LocalDate.now()
         return currentDate.toString()
     }
 
-    //companion object gère les constantes, équivalent du static
+    suspend fun signIn(email: String, password: String): FirebaseUser? {
+        return authRepository.signIn(email,password)
+    }
+
+    suspend fun registerUser(email: String, password: String): FirebaseUser? {
+        val user = authRepository.registerUser(email,password)
+        if(user != null){
+            insertUser(user.uid, UserFirebase(email, 0, mutableListOf(),email))
+            return user
+        }
+        return null
+    }
+
+    fun signOut() {
+        return authRepository.signOut()
+    }
+
     companion object {
         private const val _collection: String = "USERS"
     }

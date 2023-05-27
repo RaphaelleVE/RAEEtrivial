@@ -10,7 +10,7 @@ import com.example.raeetrivial.domain.UserFirebase
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import com.example.raeetrivial.repository.QuestionsRepository
-import com.example.raeetrivial.repository.UserFirebaseRepository
+import com.example.raeetrivial.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -19,24 +19,24 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class QuestionsViewModel @Inject constructor(
     private val questionsRepository: QuestionsRepository,
-    private val userRepository: UserFirebaseRepository
+    private val userRepository: UserRepository
     ): ViewModel(){
 
-    private val _currentUser = MutableStateFlow<UserFirebase?>(null)
-    val currentUser : StateFlow<UserFirebase?>
-        get() = _currentUser
+    private val _currentUserFlow = MutableStateFlow<UserFirebase?>(null)
+    private val currentUserFlow : StateFlow<UserFirebase?>
+        get() = _currentUserFlow
 
-    private val _questionsOfTheDay = MutableStateFlow<QuestionsOfTheDay>(QuestionsOfTheDay())
-    val questionsOfTheDay : StateFlow<QuestionsOfTheDay?>
-        get() = _questionsOfTheDay
+    private val _questionsOfTheDayFlow = MutableStateFlow<QuestionsOfTheDay>(QuestionsOfTheDay())
+    private val questionsOfTheDayFlow : StateFlow<QuestionsOfTheDay?>
+        get() = _questionsOfTheDayFlow
 
-    private val _currentQuestion = MutableStateFlow<Question>(Question())
-    val currentQuestion : StateFlow<Question?>
-        get() = _currentQuestion
+    private val _currentQuestionFlow = MutableStateFlow<Question>(Question())
+    val currentQuestionFlow : StateFlow<Question?>
+        get() = _currentQuestionFlow
 
-    private val _answered = MutableStateFlow<Boolean>(false)
-    val answered : StateFlow<Boolean?>
-        get() = _answered
+    private val _answeredFlow = MutableStateFlow<Boolean>(false)
+    val answeredFlow : StateFlow<Boolean?>
+        get() = _answeredFlow
 
     private val finalQuestion = Question(
         "",
@@ -46,37 +46,31 @@ class QuestionsViewModel @Inject constructor(
         ""
     )
 
-
     init {
         viewModelScope.launch(Dispatchers.IO) {
             val questionsOfTheDayRecup = questionsRepository.getQuestionsOfTheDay()
 
-            _questionsOfTheDay.update { questionsOfTheDayRecup }
+            _questionsOfTheDayFlow.update { questionsOfTheDayRecup }
 
             val currentUserRecup = userRepository.getCurrentUser()
 
             if (currentUserRecup != null) {
-                _currentUser.update { currentUserRecup }
+                _currentUserFlow.update { currentUserRecup }
                 if (getCurrentQuestionIndex() > 9) {
-                    _currentQuestion.update { finalQuestion }
+                    _currentQuestionFlow.update { finalQuestion }
                 } else {
-                    _currentQuestion.update { questionsOfTheDay.value!!.questions[getCurrentQuestionIndex()] }
+                    _currentQuestionFlow.update { questionsOfTheDayFlow.value!!.questions[getCurrentQuestionIndex()] }
                 }
             }
         }
     }
 
     private fun getCurrentQuestionIndex(): Int {
-        val index = userRepository.getCurrentQuestionOfTheDay(currentUser.value)
-        if(index != null){
-            return index
-        } else {
-            return 0
-        }
+        return userRepository.getCurrentQuestionOfTheDay(currentUserFlow.value) ?: 0
     }
 
     fun validateAnswers(answer : Answer){
-        _answered.update{true}
+        _answeredFlow.update{true}
 
         viewModelScope.launch(Dispatchers.IO) {
             if(answer.isCorrect){
@@ -88,30 +82,28 @@ class QuestionsViewModel @Inject constructor(
     }
 
     private fun increaseScore(score: Int) {
-        if(currentUser.value != null) {
-                currentUser.value!!.score += score
-                userRepository.updateCurrentUser(currentUser.value!!)
+        if(currentUserFlow.value != null) {
+                currentUserFlow.value!!.score += score
+                userRepository.updateCurrentUser(currentUserFlow.value!!)
         }
     }
 
     fun goToNextQuestion() {
-        _answered.update { false }
+        _answeredFlow.update { false }
         incrementQuestion()
 
-        if (currentUser.value != null) {
+        if (currentUserFlow.value != null) {
             if (getCurrentQuestionIndex() > 9) {
-                _currentQuestion.update { finalQuestion }
+                _currentQuestionFlow.update { finalQuestion }
             } else {
-                _currentQuestion.update { questionsOfTheDay.value!!.questions[getCurrentQuestionIndex()] }
+                _currentQuestionFlow.update { questionsOfTheDayFlow.value!!.questions[getCurrentQuestionIndex()] }
             }
         }
     }
 
     private fun incrementQuestion() {
-        if(currentUser.value != null){
-            userRepository.incrementCurrentQuestionOfTheDay(currentUser.value)
+        if(currentUserFlow.value != null){
+            userRepository.incrementCurrentQuestionOfTheDay(currentUserFlow.value)
         }
     }
-
-
 }

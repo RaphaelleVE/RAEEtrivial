@@ -29,12 +29,11 @@ import com.example.raeetrivial.ui.theme.MainDarkBleue
 import com.example.raeetrivial.ui.theme.Pink80
 import com.example.raeetrivial.ui.theme.YellowWhite
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuestionsScreen() {
     val viewModel = hiltViewModel<QuestionsViewModel>()
-    val currentQuestion = viewModel.currentQuestion.collectAsState().value
-    val answered = viewModel.answered.collectAsState().value
+    val currentQuestion = viewModel.currentQuestionFlow.collectAsState().value
+    val answered = viewModel.answeredFlow.collectAsState().value
 
     var selectedIndex by remember { mutableStateOf(-1) }
 
@@ -56,27 +55,30 @@ fun QuestionsScreen() {
                 ),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 8.dp,
-                ),
-                content = {
-                    Text(
-                        modifier = Modifier.padding(20.dp),
-                        fontSize = (17.sp),
-                        style = MaterialTheme.typography.titleMedium,
-                        text = currentQuestion.question
-                    )
-                })
+                )
+            ) {
+                Text(
+                    modifier = Modifier.padding(20.dp),
+                    fontSize = (17.sp),
+                    style = MaterialTheme.typography.titleMedium,
+                    text = currentQuestion.question
+                )
+            }
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(dimensionResource(id = R.dimen.miniSpacer))
             )
             currentQuestion.answers.forEachIndexed { index, it ->
-                Button(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(15.dp)
-                    .height(dimensionResource(id = R.dimen.answerButtonHeight)),
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(15.dp)
+                        .height(dimensionResource(id = R.dimen.answerButtonHeight)),
                     shape = RoundedCornerShape(7.dp),
                     colors = ButtonDefaults.buttonColors(
+                        //the condition in containerColor allows to modifiy the color of the clicked
+                        // answer according to the rightness of the answer
                         containerColor = if (answered && selectedIndex == index) {
                             if (it.isCorrect){
                                 Color.Green
@@ -96,9 +98,8 @@ fun QuestionsScreen() {
                     onClick = {
                         selectedIndex = index
                         viewModel.validateAnswers(it)
-                        //currentUser!!.score +=10
                     }
-                ) {
+                ){
                     Row {
                         Icon(
                             modifier = Modifier.rotate(90F),
@@ -120,11 +121,7 @@ fun QuestionsScreen() {
                         )
                     }
                 }
-
             }
-
         }
-
     }
-
 }

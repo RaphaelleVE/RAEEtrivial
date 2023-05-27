@@ -17,7 +17,6 @@ import com.example.raeetrivial.R
 import com.example.raeetrivial.ui.theme.YellowWhite
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RankingScreen() {
 
@@ -25,8 +24,9 @@ fun RankingScreen() {
     val userlist = rankingViewModel.rankingFlow.collectAsState().value.sortedByDescending { it.score }
 
     Card (
-        Modifier.fillMaxSize()
-                .padding(dimensionResource(id = R.dimen.loginPadding)),
+        Modifier
+            .fillMaxSize()
+            .padding(dimensionResource(id = R.dimen.loginPadding)),
         colors = CardDefaults.cardColors(
             containerColor = YellowWhite,
             contentColor = Color.Black
@@ -77,7 +77,6 @@ fun RankingScreen() {
                             thickness = 2.dp,
                             color = Color.Gray
                         )
-
                     }
                 }
             }

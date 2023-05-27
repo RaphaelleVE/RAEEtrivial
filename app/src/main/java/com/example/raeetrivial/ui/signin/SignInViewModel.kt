@@ -1,9 +1,10 @@
-package com.example.raeetrivial.ui.login
+package com.example.raeetrivial.ui.signin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.raeetrivial.repository.AuthRepository
+import com.example.raeetrivial.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -12,13 +13,10 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
+class SignInViewModel @Inject constructor(
+    private val userRepository: UserRepository,
 ): ViewModel() {
 
-    //MutableStateFlow : l'ui ne vient pas modifier la data du viewModel. On a donc besoin
-    //d'une variable dont on peut changer la valeur
-    //c'est un bus auquel la viewModel est abonnée
     private val _isConnectedFlow = MutableStateFlow<Boolean>(false)
     val isConnectedFlow: StateFlow<Boolean>
         get() = _isConnectedFlow
@@ -27,10 +25,9 @@ class LoginViewModel @Inject constructor(
     val isTryConnectionFlow: StateFlow<Boolean>
         get() = _isTryConnectionFlow
 
-    fun loginUser(email: String, password: String) {
-        //lance un thread, càd une coroutine
-        viewModelScope.launch {
-            val isLogged = authRepository.login(email, password)
+    fun signInUser(email: String, password: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val isLogged = userRepository.signIn(email, password)
             if (isLogged != null) {
                 _isConnectedFlow.update{ true }
             }

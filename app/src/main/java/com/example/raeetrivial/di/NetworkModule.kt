@@ -1,9 +1,7 @@
 package com.example.raeetrivial.di
 
 import com.example.raeetrivial.BuildConfig
-import com.example.raeetrivial.network.DetailsApi
 import com.example.raeetrivial.network.QuestionsOfTheDayApi
-import com.example.raeetrivial.network.UsersApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,16 +38,6 @@ object NetworkModule {
         .baseUrl("https://opentdb.com/")
         .client(okHttpClient)
         .build()
-
-    @Provides
-    @Singleton
-    fun provideApiService(retrofit: Retrofit): UsersApi =
-        retrofit.create(UsersApi::class.java)
-
-    @Provides
-    @Singleton
-    fun provideUserDetailsService(retrofit: Retrofit): DetailsApi =
-        retrofit.create(DetailsApi::class.java)
 
     @Provides
     @Singleton

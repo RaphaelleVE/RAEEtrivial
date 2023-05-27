@@ -17,7 +17,7 @@ import javax.inject.Inject
 class QuestionsRepository @Inject constructor (
     private val firestore: FirebaseFirestore,
     private val api: QuestionsOfTheDayApi,
-    private val userRepository : UserFirebaseRepository
+    private val userRepository : UserRepository
 
 ){
         suspend fun getQuestionsOfTheDay(): QuestionsOfTheDay {
@@ -36,12 +36,6 @@ class QuestionsRepository @Inject constructor (
             userRepository.createCurrentQuestionOfTheDay(getQuestionsId())
             return questionsOfTheDay
         }
-
-
-        /*fun getQuestionsFromDb(): Flow<List<Question>> {
-            return firestore.collection(_collection).document(today.toString()).collection(
-                _subCollection).snapshots().map { it.toObjects<Question>()}
-        }*/
 
         private fun buildQuestion(result: Result): Question{
             val answers = createPossibleAnswers(result)
