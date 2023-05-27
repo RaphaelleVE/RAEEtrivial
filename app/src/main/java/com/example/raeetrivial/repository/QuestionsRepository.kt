@@ -10,58 +10,65 @@ import com.example.raeetrivial.network.model.Result
 import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.firestore.ktx.toObject
 import kotlinx.coroutines.flow.first
-import java.time.LocalDate
 
 import javax.inject.Inject
 
 class QuestionsRepository @Inject constructor (
-    private val firestore: FirebaseFirestore,
+    private val store: FirebaseFirestore,
     private val api: QuestionsOfTheDayApi,
-    private val userRepository : UserRepository
+    private val userRepository : UserRepository,
+    private val utils : FirestoreUtils
 
 ){
-        suspend fun getQuestionsOfTheDay(): QuestionsOfTheDay {
+    suspend fun getQuestionsOfTheDay(): QuestionsOfTheDay {
 
-            var questionsOfTheDay = firestore.collection(_collection).document(getQuestionsId()).snapshots().first().toObject<QuestionsOfTheDay>()
+        var questionsOfTheDay = store
+            .collection(_collection)
+            .document(utils.getQuestionsId())
+            .snapshots().first().toObject<QuestionsOfTheDay>()
 
-            if(questionsOfTheDay == null){
-                val response = api.getQuestions()
-                val questions : MutableList<Question> = arrayListOf()
-                for(result in response.results){
-                    questions.add(buildQuestion(result))
-                }
-                insertQuestionsOfTheDay(QuestionsOfTheDay(questions))
-                questionsOfTheDay = QuestionsOfTheDay((questions))
+        if(questionsOfTheDay == null){
+            val response = api.getQuestions()
+            val questions : MutableList<Question> = arrayListOf()
+            for(result in response.results){
+                questions.add(buildQuestion(result))
             }
-            userRepository.createCurrentQuestionOfTheDay(getQuestionsId())
-            return questionsOfTheDay
+            insertQuestionsOfTheDay(QuestionsOfTheDay(questions))
+            questionsOfTheDay = QuestionsOfTheDay((questions))
         }
+        userRepository.createCurrentQuestionOfTheDay(utils.getQuestionsId())
+        return questionsOfTheDay
+    }
 
-        private fun buildQuestion(result: Result): Question{
-            val answers = createPossibleAnswers(result)
-            return Question(result.category, answers, result.difficulty, Html.fromHtml(result.question).toString(), result.type)
+    //build Question form Api response
+    private fun buildQuestion(result: Result): Question{
+        val answers = buildPossibleAnswers(result)
+        return Question(
+            result.category,
+            answers,
+            result.difficulty,
+            Html.fromHtml(result.question).toString(),
+            result.type)
+    }
+
+    //build Answers from Api response
+    private fun buildPossibleAnswers(question: Result) : List<Answer>{
+        val answers = mutableListOf<Answer>()
+        answers.add(Answer(Html.fromHtml(question.correctAnswer).toString(),true))
+
+        question.incorrectAnswers.forEach{
+            answers.add(Answer(Html.fromHtml(it).toString(), false))
         }
-
-        private fun createPossibleAnswers(question: Result) : List<Answer>{
-            val answers = mutableListOf<Answer>()
-            answers.add(Answer(Html.fromHtml(question.correctAnswer).toString(),true))
-
-            question.incorrectAnswers.forEach{
-                answers.add(Answer(Html.fromHtml(it).toString(), false))
-            }
-            answers.shuffle()
-            return answers
-        }
-
-
-    private fun insertQuestionsOfTheDay(questionsOfTheDay : QuestionsOfTheDay) : Boolean{
-        return firestore.collection(_collection).document(getQuestionsId()).set(questionsOfTheDay).isSuccessful
+        answers.shuffle()
+        return answers
     }
 
 
-    fun getQuestionsId(): String {
-        val currentDate = LocalDate.now()
-        return currentDate.toString()
+    private fun insertQuestionsOfTheDay(questionsOfTheDay : QuestionsOfTheDay) : Boolean{
+        return store
+            .collection(_collection)
+            .document(utils.getQuestionsId())
+            .set(questionsOfTheDay).isSuccessful
     }
 
     companion object {
