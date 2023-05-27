@@ -149,8 +149,7 @@ fun LoginScreen(navController: NavController) {
             ),
             shape = RoundedCornerShape(7.dp),
             onClick = {
-                viewModel.loginUser(email, password)
-                //TODO LOGIN
+                viewModel.loginUser(email.trim(), password.trim())
             }
         ) {
             Text(

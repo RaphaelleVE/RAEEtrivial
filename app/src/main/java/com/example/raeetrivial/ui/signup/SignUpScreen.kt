@@ -182,10 +182,11 @@ fun SignUpScreen(navController: NavController) {
                 contentColor = YellowWhite
             ),
             onClick = {
-                if (viewModel.confirmationPasswordCheck(password, confirmationPassword)) {
-                    viewModel.signupUser(email, password)
+                if (viewModel.confirmationPasswordCheck(password.trim(), confirmationPassword.trim())) {
+                    viewModel.signupUser(email.trim(), password.trim())
                 } else {
-                    Toast.makeText(context, "Not the same passwords ! ", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Not the same passwords ! ", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         ) {
