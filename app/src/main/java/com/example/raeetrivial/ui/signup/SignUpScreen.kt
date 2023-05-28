@@ -50,17 +50,17 @@ fun SignUpScreen(navController: NavController) {
     var password by remember { mutableStateOf("") }
     var confirmationPassword by remember { mutableStateOf("") }
     val context = LocalContext.current
-    val isTryRegister = viewModel.tryRegisterFlow.collectAsState().value
-    val isSuccesRegister = viewModel.succesRegisterFlow.collectAsState().value
+    val registrationBegun = viewModel.tryRegisterFlow.collectAsState().value
+    val registrationSucceeded = viewModel.succesRegisterFlow.collectAsState().value
 
-    LaunchedEffect(isTryRegister){
-        if(isTryRegister) {
-            if (isSuccesRegister) {
+    LaunchedEffect(registrationBegun){
+        if(registrationBegun) {
+            if (registrationSucceeded) {
                 navController.navigate(Route.BASE)
             } else {
                 Toast.makeText(context, "Inscription échouée", Toast.LENGTH_SHORT).show()
             }
-        viewModel.resetIsTryRegister()
+        viewModel.resetTryRegister()
         }
     }
 
@@ -182,8 +182,8 @@ fun SignUpScreen(navController: NavController) {
                 contentColor = YellowWhite
             ),
             onClick = {
-                if (viewModel.confirmationPasswordCheck(password, confirmationPassword)) {
-                    viewModel.signupUser(email, password)
+                if (viewModel.checkPasswords(password, confirmationPassword)) {
+                    viewModel.signUpUser(email.trim(), password)
                 } else {
                     Toast.makeText(context, "Not the same passwords ! ", Toast.LENGTH_SHORT).show()
                 }

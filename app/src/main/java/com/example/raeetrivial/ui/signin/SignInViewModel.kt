@@ -17,25 +17,25 @@ class SignInViewModel @Inject constructor(
     private val userRepository: UserRepository,
 ): ViewModel() {
 
-    private val _isConnectedFlow = MutableStateFlow<Boolean>(false)
-    val isConnectedFlow: StateFlow<Boolean>
-        get() = _isConnectedFlow
+    private val _connectionSucceededFlow = MutableStateFlow<Boolean>(false)
+    val connectionSucceededFlow: StateFlow<Boolean>
+        get() = _connectionSucceededFlow
 
-    private val _isTryConnectionFlow = MutableStateFlow<Boolean>(false)
-    val isTryConnectionFlow: StateFlow<Boolean>
-        get() = _isTryConnectionFlow
+    private val _connectionIntendedFlow = MutableStateFlow<Boolean>(false)
+    val connectionIntendedFlow: StateFlow<Boolean>
+        get() = _connectionIntendedFlow
 
     fun signInUser(email: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val loggedUser = userRepository.signIn(email, password)
             if (loggedUser != null) {
-                _isConnectedFlow.update{ true }
+                _connectionSucceededFlow.update{ true }
             }
-            _isTryConnectionFlow.update{ true }
+            _connectionIntendedFlow.update{ true }
         }
     }
 
-    fun resetIsTryConnection() {
-        _isTryConnectionFlow.update { false }
+    fun resetConnectionIntended() {
+        _connectionIntendedFlow.update { false }
     }
 }
