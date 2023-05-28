@@ -23,7 +23,7 @@ class SignupViewModel @Inject constructor(
     private val _succesRegisterFlow = MutableStateFlow<Boolean>(false)
     val succesRegisterFlow: StateFlow<Boolean> = _succesRegisterFlow
 
-    fun signupUser(email: String, password: String) {
+    fun signUpUser(email: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val uid = registerUser(email, password)
             if (uid != null) {
@@ -37,7 +37,7 @@ class SignupViewModel @Inject constructor(
         return userRepository.registerUser(email, password)?.uid
     }
 
-    fun confirmationPasswordCheck(
+    fun checkPasswords(
         password: String,
         confirmationPassword: String
     ): Boolean {
@@ -46,7 +46,7 @@ class SignupViewModel @Inject constructor(
         }
         return false
     }
-    fun resetIsTryRegister() {
+    fun resetTryRegister() {
         _tryRegisterFlow.update { false }
     }
 }

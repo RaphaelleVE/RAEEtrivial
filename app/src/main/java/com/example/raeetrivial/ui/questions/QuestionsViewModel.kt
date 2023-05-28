@@ -88,7 +88,7 @@ class QuestionsViewModel @Inject constructor(
         }
     }
 
-    fun goToNextQuestion() {
+    private fun goToNextQuestion() {
         _answeredFlow.update { false }
         incrementQuestion()
 

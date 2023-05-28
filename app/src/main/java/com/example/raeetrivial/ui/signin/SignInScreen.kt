@@ -47,18 +47,18 @@ fun SignInScreen(navController: NavController) {
     val context = LocalContext.current
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val isConnected = viewModel.isConnectedFlow.collectAsState().value
-    val isTryConnection = viewModel.isTryConnectionFlow.collectAsState().value
+    val connectionSucceeded = viewModel.connectionSucceededFlow.collectAsState().value
+    val connectionIntended = viewModel.connectionIntendedFlow.collectAsState().value
 
-    LaunchedEffect(isTryConnection){
-        if(isTryConnection){
-            if (isConnected) {
+    LaunchedEffect(connectionIntended){
+        if(connectionIntended){
+            if (connectionSucceeded) {
                 Toast.makeText(context, "Connexion réussie", Toast.LENGTH_SHORT).show()
                 navController.navigate(Route.BASE)
             } else {
                 Toast.makeText(context, "Connexion échouée", Toast.LENGTH_SHORT).show()
             }
-            viewModel.resetIsTryConnection()
+            viewModel.resetConnectionIntended()
         }
     }
 
@@ -150,7 +150,7 @@ fun SignInScreen(navController: NavController) {
             ),
             shape = RoundedCornerShape(7.dp),
             onClick = {
-                viewModel.signInUser(email, password)
+                viewModel.signInUser(email.trim(), password)
             }
         ) {
             Text(
