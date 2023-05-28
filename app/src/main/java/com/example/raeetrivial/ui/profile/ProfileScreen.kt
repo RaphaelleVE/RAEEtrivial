@@ -24,10 +24,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -54,10 +56,12 @@ fun ProfileScreen() {
         }
     }
     
-    
-    Column() {
+
     if(currentUser.email != ""){
-        Column(modifier = Modifier.padding(10.dp)) {
+        Column(modifier = Modifier.fillMaxSize().padding(dimensionResource(id = R.dimen.globalPadding)),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Box(
                 modifier = Modifier
                     .size(200.dp)
@@ -79,20 +83,24 @@ fun ProfileScreen() {
                 fontSize = 20.sp,
                 color = YellowWhite,
             )
-            Row( modifier = Modifier.fillMaxWidth(),Arrangement.SpaceAround) {
+            Row( modifier = Modifier.fillMaxWidth(),Arrangement.Center) {
                 if(!isEditingPseudo) {
                     Text(
+                        modifier = Modifier
+                            .width(300.dp),
                         text = currentUser.pseudo,
-                        textAlign = TextAlign.Center,
                         fontSize = 20.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         color = YellowWhite,
                     )
 
                 }else{
                     TextField(
                         modifier = Modifier
-                            .width(200.dp),
+                            .width(300.dp),
                         value = newPseudo,
+                        maxLines = 1,
                         onValueChange = {
                             newPseudo = it
                         },
@@ -137,23 +145,16 @@ fun ProfileScreen() {
             )
             Text(
                 text = currentUser.email,
+                maxLines = 1,
                 textAlign = TextAlign.Center,
                 fontSize = 20.sp,
                 color = YellowWhite,
             )
-        }
-    }
-        Column(modifier = Modifier.padding(10.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
                 Text(text = "Score : " + currentUser.score,
+                    maxLines = 1,
                     textAlign = TextAlign.Left,
                     fontSize = 30.sp,
                     color = YellowWhite)
-            }
         }
     }
 }

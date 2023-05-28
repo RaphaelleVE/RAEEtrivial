@@ -21,11 +21,13 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.raeetrivial.R
 import com.example.raeetrivial.ui.theme.MainDarkBleue
+import com.example.raeetrivial.ui.theme.MainYellow
 import com.example.raeetrivial.ui.theme.Pink80
 import com.example.raeetrivial.ui.theme.YellowWhite
 
@@ -40,7 +42,7 @@ fun QuestionsScreen() {
     Column(
         Modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.loginPadding))
+            .padding(dimensionResource(id = R.dimen.globalPadding))
     ) {
         if (currentQuestion != null && answered != null) {
             Card(
@@ -79,13 +81,12 @@ fun QuestionsScreen() {
                     colors = ButtonDefaults.buttonColors(
                         //the condition in containerColor allows to modifiy the color of the clicked
                         // answer according to the rightness of the answer
-                        containerColor = if (answered && selectedIndex == index) {
-                            if (it.isCorrect){
-                                Color.Green
-                            } else {
+                        containerColor = if (answered && selectedIndex == index && !it.isCorrect ) {
                                 Color.Red
-                            }
-                        } else {
+                        } else if (answered && it.isCorrect){
+                                Color.Green
+                        }
+                        else {
                             YellowWhite
                         },
                         contentColor = Color.Black,
@@ -107,7 +108,7 @@ fun QuestionsScreen() {
                                 id =
                                 R.drawable.ic_triangle_48px
                             ),
-                            tint = Pink80,
+                            tint = MainYellow,
                             contentDescription = "Icon response"
 
                         )

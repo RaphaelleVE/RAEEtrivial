@@ -4,6 +4,7 @@
     <dimen name="questionSpacer">4dp</dimen>
     <dimen name="blockSpacer">30dp</dimen>
     <dimen name="loginPadding">30dp</dimen>
+    <dimen name="globalPadding">16dp</dimen>
     <dimen name="bigButtonHeight">60dp</dimen>
     <dimen name="answerButtonHeight">60dp</dimen>
     <dimen name="editTextHeight">50dp</dimen>
