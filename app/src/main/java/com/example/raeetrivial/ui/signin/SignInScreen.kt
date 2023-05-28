@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -90,6 +91,7 @@ fun SignInScreen(navController: NavController) {
             onValueChange = {
                 email = it
             },
+            maxLines = 1,
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = YellowWhite,
                 cursorColor = MaterialTheme.colorScheme.secondary,
@@ -124,14 +126,16 @@ fun SignInScreen(navController: NavController) {
                 cursorColor = MaterialTheme.colorScheme.secondary,
                 textColor = Color.Black
             ),
+            maxLines = 1,
             label = {
                 Text(text = stringResource(R.string.password))
             },
             shape = RoundedCornerShape(7.dp),
+            visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
                 autoCorrect = false,
-                keyboardType = KeyboardType.Email,
+                keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next
             )
         )

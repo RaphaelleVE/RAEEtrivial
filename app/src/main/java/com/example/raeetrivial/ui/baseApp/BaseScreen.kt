@@ -20,6 +20,8 @@ import com.example.raeetrivial.ui.ranking.RankingScreen
 import com.example.raeetrivial.ui.Route
 import com.example.raeetrivial.ui.profile.ProfileScreen
 import com.example.raeetrivial.ui.questions.QuestionsScreen
+import com.example.raeetrivial.ui.theme.MainDarkBleue
+import com.example.raeetrivial.ui.theme.MainYellow
 import com.example.raeetrivial.ui.theme.YellowWhite
 
 
@@ -32,13 +34,15 @@ fun BaseScreen(navController: NavController) {
     Scaffold (
         topBar = {
             CenterAlignedTopAppBar(
-                title = {Text(text = "Trivial Pursuit")},
+                title = {Text(text = "Trivial Pursuit",
+                    color = Color.Black)},
+
                 colors= TopAppBarDefaults.smallTopAppBarColors(containerColor = YellowWhite),
                 actions =
                 {
                     IconButton(onClick = {
                         viewModel.signOut()
-                        navController.navigate(Route.SIGN_UP)
+                        navController.navigate(Route.SIGN_IN)
                     }) {
                         Icon(
                             painterResource(id = R.drawable.ic_logout),
@@ -51,21 +55,54 @@ fun BaseScreen(navController: NavController) {
         containerColor = MaterialTheme.colorScheme.primary,
         bottomBar = {
             NavigationBar (containerColor = YellowWhite,
+                    contentColor = MainYellow,
+                tonalElevation = 5.dp
                 ){
                 NavigationBarItem(
                     icon = {
                         Icon(
-                            painterResource(id = R.drawable.ic_ranking_48px),
-                            tint = Color.Black,
-                            contentDescription = stringResource(R.string.ranking)
+                            painterResource(id = R.drawable.ic_question_bubble_48px),
+                            contentDescription = stringResource(R.string.game)
                         )
                     },
                     label = {
                         Text(
-                            color = Color.Black,
+                            text = stringResource(R.string.game),
+                            modifier = Modifier.offset(0.dp, 10.dp))
+                    },
+
+                    alwaysShowLabel = true,
+                    selected = false,
+                    colors = NavigationBarItemDefaults.colors(
+                        indicatorColor = MainYellow,
+                        selectedIconColor = MainDarkBleue,
+                        unselectedIconColor = Color.Black,
+                        selectedTextColor = MainDarkBleue,
+                        unselectedTextColor = Color.Transparent,
+                    ),
+                    onClick = {
+                        navBarController.navigate(Route.QUESTIONS)
+                    }
+                )
+                NavigationBarItem(
+                    icon = {
+                        Icon(
+                            painterResource(id = R.drawable.ic_ranking_48px),
+                            contentDescription = stringResource(R.string.ranking),
+                        )
+                    },
+                    label = {
+                        Text(
                             text = stringResource(R.string.ranking),
                             modifier = Modifier.offset(0.dp, 10.dp))
                     },
+                    colors = NavigationBarItemDefaults.colors(
+                        indicatorColor = MainYellow,
+                        selectedIconColor = MainDarkBleue,
+                        unselectedIconColor = Color.Black,
+                        selectedTextColor = MainDarkBleue,
+                        unselectedTextColor = Color.Transparent,
+                    ),
                     alwaysShowLabel = true,
                     selected = false,
                     onClick = {
@@ -75,37 +112,22 @@ fun BaseScreen(navController: NavController) {
                 NavigationBarItem(
                     icon = {
                         Icon(
-                            painterResource(id = R.drawable.ic_question_bubble_48px),
-                            tint = Color.Black,
-                            contentDescription = stringResource(R.string.game)
-                        )
-                    },
-                    label = {
-                        Text(
-                            color = Color.Black,
-                            text = stringResource(R.string.game),
-                            modifier = Modifier.offset(0.dp, 10.dp))
-                    },
-                    alwaysShowLabel = true,
-                    selected = false,
-                    onClick = {
-                        navBarController.navigate(Route.QUESTIONS)
-                    }
-                )
-                NavigationBarItem(
-                    icon = {
-                        Icon(
                             painterResource(id = R.drawable.ic_profile_48px),
-                            tint = Color.Black,
                             contentDescription = stringResource(R.string.profile)
                         )
                     },
                     label = {
                         Text(
-                            color = Color.Black,
                             text = stringResource(R.string.profile),
                             modifier = Modifier.offset(0.dp, 10.dp))
                     },
+                    colors = NavigationBarItemDefaults.colors(
+                        indicatorColor = MainYellow,
+                        selectedIconColor = MainDarkBleue,
+                        unselectedIconColor = Color.Black,
+                        selectedTextColor = MainDarkBleue,
+                        unselectedTextColor = Color.Transparent,
+                    ),
                     alwaysShowLabel = true,
                     selected = false,
                     onClick = {

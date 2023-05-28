@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,7 +27,7 @@ fun RankingScreen() {
     Card (
         Modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.loginPadding)),
+            .padding(dimensionResource(id = R.dimen.globalPadding)),
         colors = CardDefaults.cardColors(
             containerColor = YellowWhite,
             contentColor = Color.Black
@@ -51,15 +52,16 @@ fun RankingScreen() {
                                     .padding(dimensionResource(id = R.dimen.miniSpacer)),
                                 fontSize = (25.sp),
                                 text = (index+1).toString(),
-                                textAlign = TextAlign.Center,
                                 style = MaterialTheme.typography.titleMedium,
                             )
                             Text(
                                 modifier = Modifier
                                     .fillMaxHeight()
+                                    .width(250.dp)
                                     .padding(dimensionResource(id = R.dimen.miniSpacer)),
                                 fontSize = (20.sp),
-                                textAlign = TextAlign.Center,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
                                 text = userlist[index].pseudo
                             )
                             Text(

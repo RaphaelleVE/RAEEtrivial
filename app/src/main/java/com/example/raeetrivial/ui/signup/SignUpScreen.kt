@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -92,6 +93,7 @@ fun SignUpScreen(navController: NavController) {
             onValueChange = {
                 email = it
             },
+            singleLine = true,
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = YellowWhite,
                 cursorColor = MaterialTheme.colorScheme.secondary,
@@ -126,14 +128,16 @@ fun SignUpScreen(navController: NavController) {
                 cursorColor = MaterialTheme.colorScheme.secondary,
                 textColor = Color.Black
             ),
+            maxLines = 1,
             label = {
                 Text(text = stringResource(R.string.password))
             },
             shape = RoundedCornerShape(7.dp),
+            visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
                 autoCorrect = false,
-                keyboardType = KeyboardType.Email,
+                keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next
             )
         )
@@ -159,10 +163,11 @@ fun SignUpScreen(navController: NavController) {
             label = {
                 Text(text = stringResource(R.string.confirm_password))
             },
+            visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
                 autoCorrect = false,
-                keyboardType = KeyboardType.Email,
+                keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Next
             )
         )
