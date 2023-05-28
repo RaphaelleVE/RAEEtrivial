@@ -57,7 +57,7 @@ fun RankingScreen() {
                             Text(
                                 modifier = Modifier
                                     .fillMaxHeight()
-                                    .width(250.dp)
+                                    .width(200.dp)
                                     .padding(dimensionResource(id = R.dimen.miniSpacer)),
                                 fontSize = (20.sp),
                                 maxLines = 1,

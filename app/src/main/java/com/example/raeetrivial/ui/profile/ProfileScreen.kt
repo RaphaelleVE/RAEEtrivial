@@ -83,22 +83,23 @@ fun ProfileScreen() {
                 fontSize = 20.sp,
                 color = YellowWhite,
             )
-            Row( modifier = Modifier.fillMaxWidth(),Arrangement.Center) {
+            Row( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 if(!isEditingPseudo) {
                     Text(
                         modifier = Modifier
-                            .width(300.dp),
+                            .width(200.dp),
                         text = currentUser.pseudo,
                         fontSize = 20.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         color = YellowWhite,
+                        textAlign = TextAlign.Center
                     )
 
                 }else{
                     TextField(
                         modifier = Modifier
-                            .width(300.dp),
+                            .width(250.dp),
                         value = newPseudo,
                         maxLines = 1,
                         onValueChange = {
@@ -127,8 +128,9 @@ fun ProfileScreen() {
                                 isEditingPseudo = true
                             }
                         },
-                    modifier = Modifier
-                        .fillMaxWidth()) {
+
+                )
+                {
                             Icon(
                             painter =
                                 if(!isEditingPseudo) painterResource(id = R.drawable.ic_edit_48px)
