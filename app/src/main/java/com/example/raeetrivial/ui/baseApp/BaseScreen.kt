@@ -78,7 +78,7 @@ fun BaseScreen(navController: NavController) {
                         selectedIconColor = MainDarkBleue,
                         unselectedIconColor = Color.Black,
                         selectedTextColor = MainDarkBleue,
-                        unselectedTextColor = Color.Transparent,
+                        unselectedTextColor = Color.Black,
                     ),
                     onClick = {
                         navBarController.navigate(Route.QUESTIONS)
@@ -101,7 +101,7 @@ fun BaseScreen(navController: NavController) {
                         selectedIconColor = MainDarkBleue,
                         unselectedIconColor = Color.Black,
                         selectedTextColor = MainDarkBleue,
-                        unselectedTextColor = Color.Transparent,
+                        unselectedTextColor = Color.Black,
                     ),
                     alwaysShowLabel = true,
                     selected = false,
@@ -126,7 +126,7 @@ fun BaseScreen(navController: NavController) {
                         selectedIconColor = MainDarkBleue,
                         unselectedIconColor = Color.Black,
                         selectedTextColor = MainDarkBleue,
-                        unselectedTextColor = Color.Transparent,
+                        unselectedTextColor = Color.Black,
                     ),
                     alwaysShowLabel = true,
                     selected = false,
